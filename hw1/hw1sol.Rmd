@@ -1,5 +1,6 @@
 ---
 title: "Biostat M280 Homework 1"
+author: "Edward Yu <edwardmjyu@gmail.com>"
 subtitle: Due Jan 25 @ 11:59PM
 output: html_document
 ---
