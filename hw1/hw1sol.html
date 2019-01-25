@@ -267,11 +267,47 @@ $(document).ready(function () {
 <ol style="list-style-type: decimal">
 <li><p>You and your friend just have finished reading <em>Pride and Prejudice</em> by Jane Austen. Among the four main characters in the book, Elizabeth, Jane, Lydia, and Darcy, your friend thinks that Darcy was the most mentioned. You, however, are certain it was Elizabeth. Obtain the full text of the novel from <a href="https://www.gutenberg.org/files/1342/1342.txt" class="uri">https://www.gutenberg.org/files/1342/1342.txt</a> and save to your local folder.</p>
 <pre class="bash"><code>curl https://www.gutenberg.org/files/1342/1342.txt &gt; pride_and_prejudice.txt</code></pre>
-<p>Do <strong>not</strong> put this text file <code>pride_and_prejudice.txt</code> in Git. Using a <code>for</code> loop, how would you tabulate the number of times each of the four characters is mentioned?</p></li>
+<p>Do <strong>not</strong> put this text file <code>pride_and_prejudice.txt</code> in Git. Using a <code>for</code> loop, how would you tabulate the number of times each of the four characters is mentioned?</p>
+<pre class="bash"><code>for i in Darcy Elizabeth Jane Lydia
+  do cat /home/edwardmjyu/biostat-m280-2019-winter/hw1/pride_and_prejudice.txt                    | grep -c $i 
+done </code></pre>
+<pre><code>## 415
+## 634
+## 291
+## 166</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Name</th>
+<th align="left"># of References</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">Darcy</td>
+<td align="left">415</td>
+</tr>
+<tr class="even">
+<td align="left">Elizabeth</td>
+<td align="left">634</td>
+</tr>
+<tr class="odd">
+<td align="left">Jane</td>
+<td align="left">291</td>
+</tr>
+<tr class="even">
+<td align="left">Lydia</td>
+<td align="left">166</td>
+</tr>
+</tbody>
+</table></li>
 <li><p>What’s the difference between the following two commands?</p>
 <pre class="bash"><code>echo 'hello, world' &gt; test1.txt</code></pre>
 <p>and</p>
 <pre class="bash"><code>echo 'hello, world' &gt;&gt; test2.txt</code></pre></li>
+</ol>
+<p><strong>Solution:</strong> The first statement directs the output of the echo command into a new file called test1.txt. The second statement appends the ouput of the echo command into the file test2.txt. If the second command is run multiple times, the test2 file will continue to append and add ‘hello, world’ as many times as the code is run.</p>
+<ol start="3" style="list-style-type: decimal">
 <li><p>Using your favorite text editor (e.g., <code>vi</code>), type the following and save the file as <code>middle.sh</code>:</p>
 <pre class="bash"><code>#!/bin/sh
 # Select lines from the middle of a file.

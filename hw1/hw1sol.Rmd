@@ -70,7 +70,7 @@ for datafile in /home/m280data/NYCHVS/*.csv
 
 **Solution:** 
 ```{bash}
-awk -F ',' '{print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c | head -5
+awk -F ',' '{if (NR > 2) print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c 
 ```
 
 ## Q3. More fun with shell
@@ -81,16 +81,32 @@ awk -F ',' '{print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c |
     ```
 Do **not** put this text file `pride_and_prejudice.txt` in Git. Using a `for` loop, how would you tabulate the number of times each of the four characters is mentioned?
 
-0. What's the difference between the following two commands?
-    ```{bash eval=FALSE}
+    ```{bash}
+for i in Darcy Elizabeth Jane Lydia
+  do 
+  echo "$i" 
+  cat /home/edwardmjyu/biostat-m280-2019-winter/hw1/pride_and_prejudice.txt | grep -c $i 
+done 
+    ```
+| Name | # of References | 
+|:------|:-----|
+| Darcy | 415 |
+| Elizabeth | 634 |
+| Jane| 291 |     
+|Lydia| 166 |
+
+2. What's the difference between the following two commands?
+    ```{bash}
     echo 'hello, world' > test1.txt
     ```
     and
-    ```{bash eval=FALSE}
+    ```{bash}
     echo 'hello, world' >> test2.txt
     ```
 
-0. Using your favorite text editor (e.g., `vi`), type the following and save the file as `middle.sh`:
+**Solution:** The first statement directs the output of the echo command into a new file called  test1.txt. The second statement appends the ouput of the echo command into the file test2.txt. If the second command is run multiple times, the test2 file will continue to append and add 'hello, world' as many times as the code is run. 
+
+3. Using your favorite text editor (e.g., `vi`), type the following and save the file as `middle.sh`:
     ```{bash eval=FALSE}
     #!/bin/sh
     # Select lines from the middle of a file.
@@ -103,6 +119,8 @@ Using `chmod` make the file executable by the owner, and run
     ```
 Explain the output. Explain the meaning of `"$1"`, `"$2"`, and `"$3"` in this shell script. Why do we need the first line of the shell script?
 
+**Solution:** middle.sh takes in a text file and from the first 20 lines displays the last 5 lines of the 20 lines, and more generally, the code will do the same for any numerical combination. The meaning of `"$1"`, `"$2"`, and `"$3"` indexes the order of arguments required for middle.sh. '"$1"' refers to the file name, '"$2"' is the number of lines head displays, and '"$3"' is the number of lines tail finally displays from the initial head block of lines. The first line of the shell script determines which type of shell should run the program. In our case, the shell type is sh. 
+
 ## Q4. R Batch Run
 
 In class we discussed using R to organize simulation studies. 
@@ -113,7 +131,27 @@ $$
 $$
 for both methods.
 
+**Solution:**
+
+    ```{bash}
+    Rscript runSim.R n=100 dist=\"gaussian\" seed=3 
+    ```
+
+    ```{bash}
+    Rscript runSim.R n=100 dist=\"gaussian\"
+    ```
+
 2. Modify the [`autoSim.R`](http://hua-zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/autoSim.R) script to run simulations with combinations of sample sizes `nVals = seq(100, 500, by=100)` and distributions `distTypes = c("gaussian", "t1", "t5")` and write output to appropriately named files. Use `rep = 50`, and `seed = 280`. 
+
+**Solution:** Here is my 'autoSim.R' code:
+    ```{bash}
+    cat autoSim.R
+    ```
+
+  Let's run simulations with various 'n' and 'dist':
+    ```{bash}
+    Rscript autoSim.R
+    ```
 
 3. Write an R script to collect simulation results from output files and print average MSEs in a table of format
 
@@ -129,4 +167,5 @@ for both methods.
 | 400 | SampAvg  |       |       |          |
 | 500 | PrimeAvg |       |       |          |
 | 500 | SampAvg  |       |       |          |
+
 
