@@ -255,7 +255,7 @@ $(document).ready(function () {
 <li>What unique values does the second variable <code>borough</code> take in <code>NYCHVS_1991.csv</code>? Tabulate how many times each value appears.</li>
 </ol>
 <p><strong>Solution:</strong></p>
-<pre class="bash"><code>awk -F ',' '{print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c | head -5</code></pre>
+<pre class="bash"><code>awk -F ',' '{if (NR &gt; 2) print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c </code></pre>
 <pre><code>##    2271 1
 ##    4412 2
 ##    3780 3
@@ -269,11 +269,17 @@ $(document).ready(function () {
 <pre class="bash"><code>curl https://www.gutenberg.org/files/1342/1342.txt &gt; pride_and_prejudice.txt</code></pre>
 <p>Do <strong>not</strong> put this text file <code>pride_and_prejudice.txt</code> in Git. Using a <code>for</code> loop, how would you tabulate the number of times each of the four characters is mentioned?</p>
 <pre class="bash"><code>for i in Darcy Elizabeth Jane Lydia
-  do cat /home/edwardmjyu/biostat-m280-2019-winter/hw1/pride_and_prejudice.txt                    | grep -c $i 
+  do 
+  echo &quot;$i&quot; 
+  cat /home/edwardmjyu/biostat-m280-2019-winter/hw1/pride_and_prejudice.txt | grep -c $i 
 done </code></pre>
-<pre><code>## 415
+<pre><code>## Darcy
+## 415
+## Elizabeth
 ## 634
+## Jane
 ## 291
+## Lydia
 ## 166</code></pre>
 <table>
 <thead>
@@ -317,16 +323,68 @@ head -n &quot;$2&quot; &quot;$1&quot; | tail -n &quot;$3&quot;</code></pre>
 <pre class="bash"><code>./middle.sh pride_and_prejudice.txt 20 5</code></pre>
 <p>Explain the output. Explain the meaning of <code>&quot;$1&quot;</code>, <code>&quot;$2&quot;</code>, and <code>&quot;$3&quot;</code> in this shell script. Why do we need the first line of the shell script?</p></li>
 </ol>
+<p><strong>Solution:</strong> middle.sh takes in a text file and from the first 20 lines displays the last 5 lines of the 20 lines, and more generally, the code will do the same for any numerical combination. The meaning of <code>&quot;$1&quot;</code>, <code>&quot;$2&quot;</code>, and <code>&quot;$3&quot;</code> indexes the order of arguments required for middle.sh. ‘“$1”’ refers to the file name, ‘“$2”’ is the number of lines head displays, and ‘“$3”’ is the number of lines tail finally displays from the initial head block of lines. The first line of the shell script determines which type of shell should run the program. In our case, the shell type is sh.</p>
 </div>
 <div id="q4.-r-batch-run" class="section level2">
 <h2>Q4. R Batch Run</h2>
 <p>In class we discussed using R to organize simulation studies.</p>
 <ol style="list-style-type: decimal">
-<li><p>Expand the <a href="http://hua-zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/runSim.R"><code>runSim.R</code></a> script to include arguments <code>seed</code> (random seed), <code>n</code> (sample size), <code>dist</code> (distribution) and <code>rep</code> (number of simulation replicates). When <code>dist=&quot;gaussian&quot;</code>, generate data from standard normal; when <code>dist=&quot;t1&quot;</code>, generate data from t-distribution with degree of freedom 1 (same as Cauchy distribution); when <code>dist=&quot;t5&quot;</code>, generate data from t-distribution with degree of freedom 5. Calling <code>runSim.R</code> will (1) set random seed according to argument <code>seed</code>, (2) generate data according to argument <code>dist</code>, (3) compute the primed-indexed average estimator and the classical sample average estimator for each simulation replicate, (4) report the average mean squared error (MSE) <span class="math display">\[
+<li>Expand the <a href="http://hua-zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/runSim.R"><code>runSim.R</code></a> script to include arguments <code>seed</code> (random seed), <code>n</code> (sample size), <code>dist</code> (distribution) and <code>rep</code> (number of simulation replicates). When <code>dist=&quot;gaussian&quot;</code>, generate data from standard normal; when <code>dist=&quot;t1&quot;</code>, generate data from t-distribution with degree of freedom 1 (same as Cauchy distribution); when <code>dist=&quot;t5&quot;</code>, generate data from t-distribution with degree of freedom 5. Calling <code>runSim.R</code> will (1) set random seed according to argument <code>seed</code>, (2) generate data according to argument <code>dist</code>, (3) compute the primed-indexed average estimator and the classical sample average estimator for each simulation replicate, (4) report the average mean squared error (MSE) <span class="math display">\[
   \frac{\sum_{r=1}^{\text{rep}} (\widehat \mu_r - \mu_{\text{true}})^2}{\text{rep}}
-\]</span> for both methods.</p></li>
-<li><p>Modify the <a href="http://hua-zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/autoSim.R"><code>autoSim.R</code></a> script to run simulations with combinations of sample sizes <code>nVals = seq(100, 500, by=100)</code> and distributions <code>distTypes = c(&quot;gaussian&quot;, &quot;t1&quot;, &quot;t5&quot;)</code> and write output to appropriately named files. Use <code>rep = 50</code>, and <code>seed = 280</code>.</p></li>
-<li><p>Write an R script to collect simulation results from output files and print average MSEs in a table of format</p></li>
+\]</span> for both methods.</li>
+</ol>
+<p><strong>Solution:</strong></p>
+<pre><code>```bash
+Rscript runSim.R n=100 dist=\&quot;gaussian\&quot; seed=280 reps=50
+```
+
+```
+## [1] 0.04146737
+## [1] 0.00948339
+```</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Modify the <a href="http://hua-zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/autoSim.R"><code>autoSim.R</code></a> script to run simulations with combinations of sample sizes <code>nVals = seq(100, 500, by=100)</code> and distributions <code>distTypes = c(&quot;gaussian&quot;, &quot;t1&quot;, &quot;t5&quot;)</code> and write output to appropriately named files. Use <code>rep = 50</code>, and <code>seed = 280</code>.</li>
+</ol>
+<p><strong>Solution:</strong> Here is my ‘autoSim.R’ code:</p>
+<p>Let’s run simulations with various ‘n’ and ‘dist’:</p>
+<pre><code>```bash
+Rscript autoSim.R
+```
+
+```
+## [1] &quot;sysCall=nohup Rscript runSim.R n=100 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n100distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=100 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n100distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=100 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n100distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=200 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n200distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=200 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n200distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=200 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n200distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=300 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n300distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=300 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n300distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=300 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n300distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=400 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n400distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=400 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n400distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=400 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n400distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=500 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n500distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=500 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n500distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=500 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n500distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=600 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n600distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=600 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n600distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=600 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n600distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=700 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n700distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=700 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n700distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=700 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n700distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=800 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n800distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=800 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n800distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=800 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n800distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=900 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n900distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=900 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n900distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=900 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n900distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=1000 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n1000distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=1000 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n1000distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=1000 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n1000distt5.txt&quot;
+```</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>Write an R script to collect simulation results from output files and print average MSEs in a table of format</li>
 </ol>
 <table>
 <thead>
