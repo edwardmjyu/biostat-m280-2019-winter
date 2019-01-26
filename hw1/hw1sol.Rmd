@@ -84,20 +84,12 @@ Do **not** put this text file `pride_and_prejudice.txt` in Git. Using a `for` lo
 
 **Solution:** For each character a search and count is performed on the `pride_and_prejudice.txt` text for that exact name. The `echo` function was added to denote the name associated with he number of times the character was mentioned in the book. This solution does not count any instances where the name might be embedded in a larger word or string within the book.
     ```{bash}
-    for i in Darcy Elizabeth Jane Lydia
+    pride_prejudice="pride_and_prejudice.txt"
+    for char in Darcy Elizabeth Jane Lydia
       do 
-      echo "$i" 
-      cat /home/edwardmjyu/biostat-m280-2019-winter/hw1/pride_and_prejudice.txt | grep -c $i 
+      echo "${char} - `grep -c "${char}" ${pride_prejudice} `"; 
     done 
     ```
-This table more clearly shows the name and the number of references made in the book:
-
-| Name | # of References | 
-|:------|:-----|
-| Darcy | 415 |
-| Elizabeth | 634 |
-| Jane| 291 |     
-|Lydia| 166 |
 
 2. What's the difference between the following two commands?
     ```{bash}
@@ -195,34 +187,33 @@ Now, running the script we create our outputted files containing MSE values for 
 
 3. Write an R script to collect simulation results from output files and print average MSEs in a table of format.
 
-**Solution:** Here is my `collection.R` script. 
+**Solution:** Here is my `collection.R` script. Comments are provided in the code below. However, one particular code to mention, the `Sys.glob()` function, was added to enhance the reproducibility of the code. Normally, the file path would include my ID, but if someone else were to run the code, the code would not work because of the file directory structure. With `Sys.glob()` and the `*` added, we avoid this issue of reproducibility.
 
     ```{r eval=FALSE}
-    ## initiating variables before for looping over dist then n.
+    #initiating variables before for looping over dist then n.
     distVals <- c("gaussian", "t1", "t5")
     nVals <- seq(100, 500, by = 100)
     interim <- c()
     col1 <- c()
     
-    ## looping over distribution type first and then n values
+    #start of for loops
     for (dist in distVals) {
       for (n in nVals) {
-        oFile <- paste("/home/edwardmjyu/biostat-m280-2019-winter/hw1/n", n, "dist",
-                       dist, ".txt", sep="")
+        oFile <- Sys.glob(paste("/home/*/biostat-m280-2019-winter/hw1/n", n, "dist",
+                       dist, ".txt", sep=""))
         rtable <- read.table(oFile) 
-        rtable <- rtable[, 2] ## pulling 2nd column since first column is [1]
+        rtable <- rtable[, 2] #pulling 2nd column since first column is [1]
         interim <- c(interim, rtable)
-        col1 <- c(col1, rep(n,2)) 
-        col1 <- head(col1, 10) ## only the first 10 rows are needed
+        col1 <- c(col1, rep(n,2))
+        col1 <- head(col1, 10)
       }
     }
-    ## 2nd column for method created
-    Avg <- rep(c('PrimeAvg', 'SampAvg'), 5) 
     
-    ## combining into final data frame
+    Avg <- rep(c('PrimeAvg', 'SampAvg'), 5)
+    
     Final_Table <- data.frame(n = col1, Method = Avg, Gaussian = interim[1:10],
-                              t5 = interim[21:30], t1 = interim[11:20]) 
-    Final_Table 
+                              t5 = interim[21:30], t1 = interim[11:20])
+    Final_Table
     ```
 
 Finally, running the code we get the desired table format:

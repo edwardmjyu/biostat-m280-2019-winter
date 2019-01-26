@@ -7,8 +7,8 @@ col1 <- c()
 #start of for loops
 for (dist in distVals) {
   for (n in nVals) {
-    oFile <- paste("/home/edwardmjyu/biostat-m280-2019-winter/hw1/n", n, "dist",
-                   dist, ".txt", sep="")
+    oFile <- Sys.glob(paste("/home/*/biostat-m280-2019-winter/hw1/n", n, "dist",
+                   dist, ".txt", sep=""))
     rtable <- read.table(oFile) 
     rtable <- rtable[, 2] #pulling 2nd column since first column is [1]
     interim <- c(interim, rtable)
@@ -22,4 +22,3 @@ Avg <- rep(c('PrimeAvg', 'SampAvg'), 5)
 Final_Table <- data.frame(n = col1, Method = Avg, Gaussian = interim[1:10],
                           t5 = interim[21:30], t1 = interim[11:20])
 Final_Table
-
