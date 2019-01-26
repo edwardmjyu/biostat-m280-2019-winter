@@ -204,25 +204,36 @@ $(document).ready(function () {
 <div id="q2.-linux-shell-commands" class="section level2">
 <h2>Q2. Linux Shell Commands</h2>
 <p>The <code>/home/m280data/NYCHVS</code> folder on teaching server contains a data set from the New York City Housing and Vacancy Survey. See <a href="https://www1.nyc.gov/site/hpd/about/nychvs-asa-data-challenge-expo.page">2019 ASA Data Challenge Expo</a> for further details.</p>
-<pre class="bash"><code>    ls -l /home/m280data/NYCHVS</code></pre>
+<pre><code>```bash
+ls -l /home/m280data/NYCHVS
+```</code></pre>
 <p>Please, do <strong>not</strong> put these data files into Git; they are big. Also do <strong>not</strong> copy them into your directory. Just read from the data folder <code>/home/m280data/NYCHVS</code> directly. Use Bash commands to answer following questions.</p>
 <ol style="list-style-type: decimal">
 <li>Display the first few lines of <code>NYCHVS_1991.csv</code>.</li>
 </ol>
-<p><strong>Solution:</strong> Show first using <code>head</code>:</p>
-<pre class="bash"><code>    head -3 /home/m280data/NYCHVS/NYCHVS_1991.csv</code></pre>
-<pre><code>## recordtype,borough,_d1,_d2,_d3,_d4,_d5,_d6,_e1,_e2,_e3,_e4,_e5,_f1,_f2,_f3,_f6,_f7,_g1,_g2,_g3,_g4,_g5,_g6,_h,_i,_1b,_1c,_1e,_1f,_2,_3,_4a,_4b,_5,_6,_7a,_7b,_7c,_8,_9a,_9c,_10a,_10b,_11a,_11b,_11c,_12a,_12a2,_12b,_12b2,_13,_14,_15a,_16,_17,_18a,_18b,_18c,_19a,_19b,_20,_21,_22a,_23a,_24a,_24b,_25a,_25b,_25c,_26a,_26b,_26c,_27,_28a1,_28a2,_28b1,_28b2,_28c,_28d1,_28d2,_28e1,_28e2,_29,_30a,_30b,_31a2,_32a,_32b,_33,_35a,_35c,_36a,_36b,_37a,_37b,_38a,_38,_39,_51,_52,_59a,_59b,_59c,_59d,_59e,_57,dhcrsif,psi,csr,scr,tsc,sro,ybr,hcr,npr,mgrent,hhinc,hhiwages,hhincf,hhiint,hhiss,hhissi,hhincdis,hhincva,sub,hhweight,seqn,year,linkage,sba,geo_id2
+<p><strong>Solution:</strong> Show the first few lines by using the command <code>head</code>. The <code>-3</code> is then used to show only the first 3 lines of the <code>NYCHVS_1991.csv</code> file:</p>
+<pre><code>```bash
+head -3 /home/m280data/NYCHVS/NYCHVS_1991.csv
+```
+
+```
+## recordtype,borough,_d1,_d2,_d3,_d4,_d5,_d6,_e1,_e2,_e3,_e4,_e5,_f1,_f2,_f3,_f6,_f7,_g1,_g2,_g3,_g4,_g5,_g6,_h,_i,_1b,_1c,_1e,_1f,_2,_3,_4a,_4b,_5,_6,_7a,_7b,_7c,_8,_9a,_9c,_10a,_10b,_11a,_11b,_11c,_12a,_12a2,_12b,_12b2,_13,_14,_15a,_16,_17,_18a,_18b,_18c,_19a,_19b,_20,_21,_22a,_23a,_24a,_24b,_25a,_25b,_25c,_26a,_26b,_26c,_27,_28a1,_28a2,_28b1,_28b2,_28c,_28d1,_28d2,_28e1,_28e2,_29,_30a,_30b,_31a2,_32a,_32b,_33,_35a,_35c,_36a,_36b,_37a,_37b,_38a,_38,_39,_51,_52,_59a,_59b,_59c,_59d,_59e,_57,dhcrsif,psi,csr,scr,tsc,sro,ybr,hcr,npr,mgrent,hhinc,hhiwages,hhincf,hhiint,hhiss,hhissi,hhincdis,hhincva,sub,hhweight,seqn,year,linkage,sba,geo_id2
 ## Record Type,Borough,&quot;Condition of Exterior Walls: Missing brick, siding, or other outside wall materi&quot;,Condition of Exterior Walls: Sloping or bulging outside walls,Condition of Exterior Walls: Major cracks in outside walls,&quot;Condition of Exterior Walls: Loose or hanging cornice, roofing, or other materia&quot;,Condition of Exterior Walls: None of these problems with walls,Condition of Exterior Walls: Unable to observe walls,Condition of Windows: Broken or missing windows,Condition of Windows: Rotten/loose windows,Condition of Windows: Boarded up windows,Condition of Windows: None of these problems with windows,Condition of Windows: Unable to observe windows,&quot;Condition of Stairways (Exterior and Interior): Loose, broken, or missing stair &quot;,&quot;Condition of Stairways (Exterior and Interior): Loose, broken, or missing steps&quot;,Condition of Stairways (Exterior and Interior): None of these problems with stai,Condition of Stairways (Exterior and Interior): Unable to observe stairways,Condition of Stairways (Exterior and Interior): No stairways,Condition of floors: Sagging or sloping floors,Condition of floors: Slanted or shifted doorsills or door frames,Condition of floors: Deep wear in floors causing depressions,Condition of floors: Holes or missing flooring,Condition of floors: None of these problems with floors,Condition of floors: Unable to observe floors,Condition of building,Any buildings with broken or boarded up windows,Householder's Sex,Householder's Age Recode,Householder's Hispanic Origin,Householder's Race,Number of Persons from Temporary Residence,Most Recent Place Householder Lived For 6 Months or More,Year Householder Moved into Unit,Before or After July 1 1971,First Occupants of Unit,Reason for Moving,Place of Householder's Birth,Place of Householder's Father's Birth,Place of Householder's Mother's Birth,Condo Coop Status,Tenure 1,Tenure 2,Lived in unit at time of conversion,Condo Cooper Conversion done through Non-Evict Plan,Year Unit Acquired,Unit Occupancy Status before Acquisition,Condo coop before acquisition,Purchase Price 1,Purchase Price 2,Down Payment 1,Down Payment 2,Value,Mortgage Status,Monthly mortgage loan payments,Monthly condo or maintenance fee,Senior Citizen Carrying Charge Increase Exemption,Fire and Liability Insurance Paid Separately,Fire and Liability Insurance Costs (Prior Year),Fire and Liability Insurance Coverage on Personal Items,Real Estate Taxes paid separately,Prior Year Real Estate Taxes,Number of Units in Building,Owner in building,Stories in building,Passenger elevator in building,Number of rooms,Number of bedrooms,Complete plumbing facilities,Exclusive use of plumbing facilities,Toilet breakdowns,Kitchen facilities,Exclusive use of kitchen facilities,Kitchen facilities functioning,Type of heating fuel,Electricity paid separately,Monthly cost (electric),Gas paid separately,Monthly cost (gas),Combined gas and electric,Water and sewer paid separately,Yearly cost (water sewer),Other fuels paid separately,Yearly cost (other fuels),Length of Lease,Monthly contract rent,Rent Regulation Status (Respondent),Senior Citizen Rent Increase Exemption (SCRIE),Heating equipment breakdown,Number of heating equipment breakdowns,Additional source(s) of heat,Presence of mice or rats,Exterminator service,Cracks of holes in interior walls,Holes in floors,Broken plaster or peeling paint on inside walls,Broken plaster or peeling paint larger than 8 1/2 x 11,Water leakage inside apartment (house),Boarded up structures in neighborhood (Respondent),Respondent rating of residential structures in neighborhood,Public Assistance or Welfare Payments,&quot;Federal, State, or Local Government Payments for Rent (Rent Subsidy)&quot;,Householder was Householder in Previous Residence,Number of Rooms in Householder's Previous Address,Number of Persons in Previous Residence at Time of Move,Householder's Previous Residence Owned or Bought by Someone in Household,Householder's Previous Residence Rented,Monthly Rent for Previous Residence,DHCR Status Input Flag,Program Status Input,Control Status Recode,Structure class recode,Type of Schedule (Renter/Owner) Code,SRO Flag,Year Built Recode,Household Composition Recode,Number of Persons Recode,Monthly Gross Rent,Total Household Income Recode,&quot;Total Household Income from Wages, Salaries, Commissions, Bonuses, or Tips Recod&quot;,&quot;Household Income from Farm or Non-farm Business, Proprietorship, or Partnership &quot;,&quot;Household Income from Interest, Dividends, Net Rental, or Royalty Income Recode&quot;,Household Income from Social Security or Railroad Retirement Payments Recode,&quot;Household Income from SSI, AFDC/TANF, Home Relief, or Other Public Assistance or&quot;,&quot;Household Income from Retirement, Survivor, or Disability Pensions Recode&quot;,&quot;Household Income from VA Payments, Unemployment, Child Support, Alimony, or Othe&quot;,Sub-Borough Area,Household Sampling Weight (5 implied decimal places),Sequence Number,Year Identifier,Linkage Indicator,Borough and Sub-Borough Area,GEO.id2
-## 1,1,9,9,9,9,1,9,9,9,9,1,9,9,9,1,9,9,9,9,9,9,1,9,2,2,2,55,1,2,0,3,83,9,2,99,10,10,10,1,9,2,9,9,99,9,9,9999999,9,9999999,9,9999999,9,9999,99,9,9,9999,9,9,99,11,2,6,1,4,3,0,3,2,0,4,1,1,1,999,1,999,37,2,999,2,9999,7,250,3,9,1,9,2,2,1,2,2,1,9,2,1,3,2,2,9,,,9,9,,2,13,95,2,15,9,5,6,1,287,999998,999999,999999,999999,999999,999999,999999,999999,1,7289636,53,91,2,101,3603710</code></pre>
+## 1,1,9,9,9,9,1,9,9,9,9,1,9,9,9,1,9,9,9,9,9,9,1,9,2,2,2,55,1,2,0,3,83,9,2,99,10,10,10,1,9,2,9,9,99,9,9,9999999,9,9999999,9,9999999,9,9999,99,9,9,9999,9,9,99,11,2,6,1,4,3,0,3,2,0,4,1,1,1,999,1,999,37,2,999,2,9999,7,250,3,9,1,9,2,2,1,2,2,1,9,2,1,3,2,2,9,,,9,9,,2,13,95,2,15,9,5,6,1,287,999998,999999,999999,999999,999999,999999,999999,999999,1,7289636,53,91,2,101,3603710
+```</code></pre>
 <ol start="2" style="list-style-type: decimal">
 <li>Display number of lines in each <code>csv</code> file.</li>
 </ol>
-<p><strong>Solution:</strong></p>
-<pre class="bash"><code>for datafile in /home/m280data/NYCHVS/*.csv
+<p><strong>Solution:</strong> For every data file in the directory that is a <code>.csv</code> file, a count of lines is performed:</p>
+<pre><code>```bash
+for datafile in /home/m280data/NYCHVS/*.csv
   do
-    wc -l $datafile
-  done</code></pre>
-<pre><code>## 14901 /home/m280data/NYCHVS/NYCHVS_1991.csv
+  wc -l $datafile
+done
+```
+
+```
+## 14901 /home/m280data/NYCHVS/NYCHVS_1991.csv
 ## 15802 /home/m280data/NYCHVS/NYCHVS_1993.csv
 ## 15754 /home/m280data/NYCHVS/NYCHVS_1996.csv
 ## 15419 /home/m280data/NYCHVS/NYCHVS_1999.csv
@@ -231,56 +242,77 @@ $(document).ready(function () {
 ## 17957 /home/m280data/NYCHVS/NYCHVS_2008.csv
 ## 16360 /home/m280data/NYCHVS/NYCHVS_2011.csv
 ## 15344 /home/m280data/NYCHVS/NYCHVS_2014.csv
-## 13268 /home/m280data/NYCHVS/NYCHVS_2017.csv</code></pre>
+## 13268 /home/m280data/NYCHVS/NYCHVS_2017.csv
+```</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li>Display the 3 files that have the least number of lines</li>
 </ol>
-<p><strong>Solution:</strong></p>
-<pre class="bash"><code>for datafile in /home/m280data/NYCHVS/*.csv
+<p><strong>Solution:</strong> Nearly the same method was used as the last question. However, now I piped the resulting output into a numeric sort and then took the head of the first 3 files, which represents the 3 files with the least number of lines.</p>
+<pre><code>```bash
+for datafile in /home/m280data/NYCHVS/*.csv
   do
-    wc -l $datafile 
-  done | sort -n | head -3</code></pre>
-<pre><code>## 13268 /home/m280data/NYCHVS/NYCHVS_2017.csv
+  wc -l $datafile 
+done | sort -n | head -3
+```
+
+```
+## 13268 /home/m280data/NYCHVS/NYCHVS_2017.csv
 ## 14901 /home/m280data/NYCHVS/NYCHVS_1991.csv
-## 15344 /home/m280data/NYCHVS/NYCHVS_2014.csv</code></pre>
+## 15344 /home/m280data/NYCHVS/NYCHVS_2014.csv
+```</code></pre>
 <ol start="4" style="list-style-type: decimal">
 <li>What’s the output of following bash script?</li>
 </ol>
 <p><strong>Solution:</strong> The bash script outputs a list of all files under the <code>/home/m280data/NYCHVS/</code> directory.</p>
-<pre class="bash"><code>for datafile in /home/m280data/NYCHVS/*.csv
+<pre><code>```bash
+for datafile in /home/m280data/NYCHVS/*.csv
   do
-    ls $datafile
-  done</code></pre>
+  ls $datafile
+done
+```</code></pre>
 <ol start="5" style="list-style-type: decimal">
 <li>What unique values does the second variable <code>borough</code> take in <code>NYCHVS_1991.csv</code>? Tabulate how many times each value appears.</li>
 </ol>
-<p><strong>Solution:</strong></p>
-<pre class="bash"><code>awk -F ',' '{if (NR &gt; 2) print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c </code></pre>
-<pre><code>##    2271 1
+<p><strong>Solution:</strong> The <code>-F</code> option in the awk command sets the delimiter as a comma whereas its initial value separates fields as whitespace. Since <code>borough</code> is the second variable within the csv file, the <code>print $2</code> denotes to awk the location of our variable of interest. The <code>uniq -c</code> command counts the number of unique values that borough takes. <code>NR &gt; 2</code> is used as a condition since we are only interested in the count of borough values 1 through 5 and their respective counts.</p>
+<pre><code>```bash
+awk -F ',' '{if (NR &gt; 2) print $2}' /home/m280data/NYCHVS/NYCHVS_1991.csv | sort | uniq -c 
+```
+
+```
+##    2271 1
 ##    4412 2
 ##    3780 3
 ##    3702 4
-##     734 5</code></pre>
+##     734 5
+```</code></pre>
 </div>
 <div id="q3.-more-fun-with-shell" class="section level2">
 <h2>Q3. More fun with shell</h2>
 <ol style="list-style-type: decimal">
 <li><p>You and your friend just have finished reading <em>Pride and Prejudice</em> by Jane Austen. Among the four main characters in the book, Elizabeth, Jane, Lydia, and Darcy, your friend thinks that Darcy was the most mentioned. You, however, are certain it was Elizabeth. Obtain the full text of the novel from <a href="https://www.gutenberg.org/files/1342/1342.txt" class="uri">https://www.gutenberg.org/files/1342/1342.txt</a> and save to your local folder.</p>
 <pre class="bash"><code>curl https://www.gutenberg.org/files/1342/1342.txt &gt; pride_and_prejudice.txt</code></pre>
-<p>Do <strong>not</strong> put this text file <code>pride_and_prejudice.txt</code> in Git. Using a <code>for</code> loop, how would you tabulate the number of times each of the four characters is mentioned?</p>
-<pre class="bash"><code>for i in Darcy Elizabeth Jane Lydia
+<p>Do <strong>not</strong> put this text file <code>pride_and_prejudice.txt</code> in Git. Using a <code>for</code> loop, how would you tabulate the number of times each of the four characters is mentioned?</p></li>
+</ol>
+<p><strong>Solution:</strong> For each character a search and count is performed on the <code>pride_and_prejudice.txt</code> text for that exact name. The <code>echo</code> function was added to denote the name associated with he number of times the character was mentioned in the book. This solution does not count any instances where the name might be embedded in a larger word or string within the book.</p>
+<pre><code>```bash
+for i in Darcy Elizabeth Jane Lydia
   do 
   echo &quot;$i&quot; 
   cat /home/edwardmjyu/biostat-m280-2019-winter/hw1/pride_and_prejudice.txt | grep -c $i 
-done </code></pre>
-<pre><code>## Darcy
+done 
+```
+
+```
+## Darcy
 ## 415
 ## Elizabeth
 ## 634
 ## Jane
 ## 291
 ## Lydia
-## 166</code></pre>
+## 166
+```</code></pre>
+<p>This table more clearly shows the name and the number of references made in the book:</p>
 <table>
 <thead>
 <tr class="header">
@@ -306,13 +338,14 @@ done </code></pre>
 <td align="left">166</td>
 </tr>
 </tbody>
-</table></li>
+</table>
+<ol start="2" style="list-style-type: decimal">
 <li><p>What’s the difference between the following two commands?</p>
 <pre class="bash"><code>echo 'hello, world' &gt; test1.txt</code></pre>
 <p>and</p>
 <pre class="bash"><code>echo 'hello, world' &gt;&gt; test2.txt</code></pre></li>
 </ol>
-<p><strong>Solution:</strong> The first statement directs the output of the echo command into a new file called test1.txt. The second statement appends the ouput of the echo command into the file test2.txt. If the second command is run multiple times, the test2 file will continue to append and add ‘hello, world’ as many times as the code is run.</p>
+<p><strong>Solution:</strong> The first statement directs the printed text of <code>hello, world</code> of the <code>echo</code> command into a new file called <code>test1.txt</code>. The second statement appends the ouput of the <code>echo</code> command into the file test2.txt. If the second command is run multiple times, the <code>test2.txt</code> file will continue to append and add <code>hello, world</code> as many times as the code is run.</p>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Using your favorite text editor (e.g., <code>vi</code>), type the following and save the file as <code>middle.sh</code>:</p>
 <pre class="bash"><code>#!/bin/sh
@@ -323,7 +356,7 @@ head -n &quot;$2&quot; &quot;$1&quot; | tail -n &quot;$3&quot;</code></pre>
 <pre class="bash"><code>./middle.sh pride_and_prejudice.txt 20 5</code></pre>
 <p>Explain the output. Explain the meaning of <code>&quot;$1&quot;</code>, <code>&quot;$2&quot;</code>, and <code>&quot;$3&quot;</code> in this shell script. Why do we need the first line of the shell script?</p></li>
 </ol>
-<p><strong>Solution:</strong> middle.sh takes in a text file and from the first 20 lines displays the last 5 lines of the 20 lines, and more generally, the code will do the same for any numerical combination. The meaning of <code>&quot;$1&quot;</code>, <code>&quot;$2&quot;</code>, and <code>&quot;$3&quot;</code> indexes the order of arguments required for middle.sh. ‘“$1”’ refers to the file name, ‘“$2”’ is the number of lines head displays, and ‘“$3”’ is the number of lines tail finally displays from the initial head block of lines. The first line of the shell script determines which type of shell should run the program. In our case, the shell type is sh.</p>
+<p><strong>Solution:</strong> <code>middle.sh</code> takes in a text file and from the first 20 lines and displays the last 5 lines of the 20 lines. The meaning of <code>&quot;$1&quot;</code>, <code>&quot;$2&quot;</code>, and <code>&quot;$3&quot;</code> indexes the order of arguments required for middle.sh. ‘“$1”’ refers to the file name, ‘“$2”’ is the number of lines head outputs, and ‘“$3”’ is the number of lines <code>tail</code> finally displays from the initial <code>head</code> block of lines. The first line of the shell script determines which type of shell should run the program. In our case, the shell type is <code>sh</code>.</p>
 </div>
 <div id="q4.-r-batch-run" class="section level2">
 <h2>Q4. R Batch Run</h2>
@@ -333,9 +366,28 @@ head -n &quot;$2&quot; &quot;$1&quot; | tail -n &quot;$3&quot;</code></pre>
   \frac{\sum_{r=1}^{\text{rep}} (\widehat \mu_r - \mu_{\text{true}})^2}{\text{rep}}
 \]</span> for both methods.</li>
 </ol>
-<p><strong>Solution:</strong></p>
+<p><strong>Solution:</strong> Additional arguments <code>seed</code>, <code>n</code>, <code>dist</code>, and <code>rep</code> were added to <code>runSim.R</code> script. A few of the less obvious methods will now be explained more in depth. The R chunk below adds the <code>rep</code> argument to the script and simultaneously generates data according to the distribution argument passed. The primed-indexed average estimator and classical sample average estimator are also calculated and combined with the generated data and stored in object <code>A</code>.</p>
+<pre><code>```r
+A &lt;- replicate(rep, c(if (dist == &quot;gaussian&quot;) {
+                        x = rnorm(n)
+                    } else if (dist == &quot;t1&quot;) {
+                        x = rt(n, 1)
+                    } else if (dist == &quot;t5&quot;) {
+                        x = rt(n, 5)
+                    }, estMeanPrimes(x), mean(x)))
+```</code></pre>
+<p>Object <code>B</code> is now created to store the values of the primed-indexed average estimator and classical sample average estimator to then calculate the MSE for both methods.</p>
+<pre><code>```r
+B &lt;- tail(A,2)
+```</code></pre>
+<p>Lastly, creating the MSE for both methods:</p>
+<pre><code>```r
+sum(B[1,]^2)/rep
+sum(B[2,]^2)/rep
+```</code></pre>
+<p>Here, I run an example output from the <code>runSim.R</code> outputting MSEprimeavg and MSEsampavg using the following parameters:</p>
 <pre><code>```bash
-Rscript runSim.R n=100 dist=\&quot;gaussian\&quot; seed=280 reps=50
+Rscript runSim.R seed=280 n=100 dist=\&quot;gaussian\&quot; rep=50
 ```
 
 ```
@@ -346,46 +398,93 @@ Rscript runSim.R n=100 dist=\&quot;gaussian\&quot; seed=280 reps=50
 <li>Modify the <a href="http://hua-zhou.github.io/teaching/biostatm280-2019winter/slides/02-linux/autoSim.R"><code>autoSim.R</code></a> script to run simulations with combinations of sample sizes <code>nVals = seq(100, 500, by=100)</code> and distributions <code>distTypes = c(&quot;gaussian&quot;, &quot;t1&quot;, &quot;t5&quot;)</code> and write output to appropriately named files. Use <code>rep = 50</code>, and <code>seed = 280</code>.</li>
 </ol>
 <p><strong>Solution:</strong> Here is my ‘autoSim.R’ code:</p>
-<p>Let’s run simulations with various ‘n’ and ‘dist’:</p>
+<pre><code>```r
+# autoSim.R
+
+nVals &lt;- seq(100, 500, by=100)
+for (n in nVals) {
+  for (dist in c(&quot;gaussian&quot;, &quot;t1&quot;, &quot;t5&quot;)) {
+    oFile &lt;- paste(&quot;n&quot;, n, &quot;dist&quot;, dist, &quot;.txt&quot;, sep=&quot;&quot;)
+    sysCall &lt;- paste(&quot;nohup Rscript runSim.R n=&quot;, n, &quot; dist=&quot;, 
+                     shQuote(shQuote(dist)), &quot; seed=&quot;, 280, &quot; rep=&quot;, 50, &quot; &gt; &quot;,
+                     oFile, sep=&quot;&quot;)
+    system(sysCall)
+    print(paste(&quot;sysCall=&quot;, sysCall, sep=&quot;&quot;))
+  }
+}
+```</code></pre>
+<p>Arguments <code>dist</code>, <code>seed</code>, and <code>rep</code> were added to the <code>sysCall</code> function to call the <code>runSim.R</code> with the correct parameters. The usage of <code>shQuote(shQuote(dist))</code> is used to double escape the string passed to the <code>dist</code> argument in order for R to properly read the value as a string and not as any other type of object.</p>
+<p>Now, running the script we create our outputted files containing MSE values for both methods:</p>
 <pre><code>```bash
 Rscript autoSim.R
 ```
 
 ```
-## [1] &quot;sysCall=nohup Rscript runSim.R n=100 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n100distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=100 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n100distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=100 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n100distt5.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=200 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n200distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=200 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n200distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=200 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n200distt5.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=300 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n300distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=300 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n300distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=300 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n300distt5.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=400 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n400distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=400 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n400distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=400 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n400distt5.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=500 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n500distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=500 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n500distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=500 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n500distt5.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=600 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n600distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=600 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n600distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=600 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n600distt5.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=700 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n700distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=700 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n700distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=700 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n700distt5.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=800 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n800distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=800 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n800distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=800 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n800distt5.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=900 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n900distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=900 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n900distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=900 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n900distt5.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=1000 dist=\&quot;'gaussian'\&quot; seed=280 reps=50 &gt; n1000distgaussian.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=1000 dist=\&quot;'t1'\&quot; seed=280 reps=50 &gt; n1000distt1.txt&quot;
-## [1] &quot;sysCall=nohup Rscript runSim.R n=1000 dist=\&quot;'t5'\&quot; seed=280 reps=50 &gt; n1000distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=100 dist=\&quot;'gaussian'\&quot; seed=280 rep=50 &gt; n100distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=100 dist=\&quot;'t1'\&quot; seed=280 rep=50 &gt; n100distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=100 dist=\&quot;'t5'\&quot; seed=280 rep=50 &gt; n100distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=200 dist=\&quot;'gaussian'\&quot; seed=280 rep=50 &gt; n200distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=200 dist=\&quot;'t1'\&quot; seed=280 rep=50 &gt; n200distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=200 dist=\&quot;'t5'\&quot; seed=280 rep=50 &gt; n200distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=300 dist=\&quot;'gaussian'\&quot; seed=280 rep=50 &gt; n300distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=300 dist=\&quot;'t1'\&quot; seed=280 rep=50 &gt; n300distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=300 dist=\&quot;'t5'\&quot; seed=280 rep=50 &gt; n300distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=400 dist=\&quot;'gaussian'\&quot; seed=280 rep=50 &gt; n400distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=400 dist=\&quot;'t1'\&quot; seed=280 rep=50 &gt; n400distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=400 dist=\&quot;'t5'\&quot; seed=280 rep=50 &gt; n400distt5.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=500 dist=\&quot;'gaussian'\&quot; seed=280 rep=50 &gt; n500distgaussian.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=500 dist=\&quot;'t1'\&quot; seed=280 rep=50 &gt; n500distt1.txt&quot;
+## [1] &quot;sysCall=nohup Rscript runSim.R n=500 dist=\&quot;'t5'\&quot; seed=280 rep=50 &gt; n500distt5.txt&quot;
 ```</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>Write an R script to collect simulation results from output files and print average MSEs in a table of format</li>
+<li>Write an R script to collect simulation results from output files and print average MSEs in a table of format.</li>
 </ol>
+<p><strong>Solution:</strong> Here is my <code>collection.R</code> script.</p>
+<pre><code>```r
+## initiating variables before for looping over dist then n.
+distVals &lt;- c(&quot;gaussian&quot;, &quot;t1&quot;, &quot;t5&quot;)
+nVals &lt;- seq(100, 500, by = 100)
+interim &lt;- c()
+col1 &lt;- c()
+
+## looping over distribution type first and then n values
+for (dist in distVals) {
+  for (n in nVals) {
+    oFile &lt;- paste(&quot;/home/edwardmjyu/biostat-m280-2019-winter/hw1/n&quot;, n, &quot;dist&quot;,
+                   dist, &quot;.txt&quot;, sep=&quot;&quot;)
+    rtable &lt;- read.table(oFile) 
+    rtable &lt;- rtable[, 2] ## pulling 2nd column since first column is [1]
+    interim &lt;- c(interim, rtable)
+    col1 &lt;- c(col1, rep(n,2)) 
+    col1 &lt;- head(col1, 10) ## only the first 10 rows are needed
+  }
+}
+## 2nd column for method created
+Avg &lt;- rep(c('PrimeAvg', 'SampAvg'), 5) 
+
+## combining into final data frame
+Final_Table &lt;- data.frame(n = col1, Method = Avg, Gaussian = interim[1:10],
+                          t5 = interim[21:30], t1 = interim[11:20]) 
+Final_Table 
+```</code></pre>
+<p>Finally, running the code we get the desired table format:</p>
+<pre><code>```bash
+Rscript collection.R
+```
+
+```
+##      n   Method    Gaussian          t5         t1
+## 1  100 PrimeAvg 0.041467370 0.066428440 2808.42600
+## 2  100  SampAvg 0.009483390 0.016750780  230.23720
+## 3  200 PrimeAvg 0.018754360 0.041847880  799.31390
+## 4  200  SampAvg 0.007163651 0.007666523   95.87976
+## 5  300 PrimeAvg 0.020025440 0.024122430  446.40240
+## 6  300  SampAvg 0.003534446 0.005471060   53.57742
+## 7  400 PrimeAvg 0.011268900 0.024331410   19.45133
+## 8  400  SampAvg 0.002970676 0.003517023   20.53370
+## 9  500 PrimeAvg 0.011176900 0.011676280  217.26890
+## 10 500  SampAvg 0.002591991 0.003354976   20.78780
+```</code></pre>
 <table>
 <thead>
 <tr class="header">
