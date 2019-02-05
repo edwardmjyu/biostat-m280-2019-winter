@@ -1,0 +1,17 @@
+Title: BIOS M280 
+Date: 2019-02-05
+Author: Edward Yu [aut, cre]
+Description: A paper in progress for understanding age model construction in paleoecology.
+License: UCLA + file LICENSE
+URL: https://github.com/palEON-Project/stepps-baconizing
+Depends:
+    R (>= 2.10)
+Imports:
+    rmarkdown,
+    ggplot2,
+    plyr,
+    reshape2,
+    dplyr,
+    readr,
+    gridExtra,
+    knitr
