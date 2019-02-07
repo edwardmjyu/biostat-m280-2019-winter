@@ -1,9 +1,14 @@
-Title: BIOS M280 
+Title: UCLA BIOS M280 Hw
+Version: 0.1.0
 Date: 2019-02-05
 Author: Edward Yu [aut, cre]
-Description: A paper in progress for understanding age model construction in paleoecology.
+Authors@R:c(person(given = "Edward", family = "Yu",
+  role - c("aut", "cre"), email -- "edwardmjyu@gmail.com"))
+Maintainer: Edward Yu <edwardmjyu@gmail.com>
+Description: Homework assignments for Biostat M280.
 License: UCLA + file LICENSE
-URL: https://github.com/palEON-Project/stepps-baconizing
+URL: https://github.com/edwardmjyu/biostat-m280-2019-winter
+BugReports: https://github.com/edwardmjyu/biostat-m280-2019-winter
 Depends:
     R (>= 2.10)
 Imports:
@@ -14,4 +19,5 @@ Imports:
     dplyr,
     readr,
     gridExtra,
-    knitr
+    knitr,
+    Rcpp
