@@ -157,7 +157,7 @@ invalid_arg &lt;- function(input) {
 #FizzBuzz combines the first function testing args and outputs proper response.
 FizzBuzz &lt;- function(x) {
   if (!is.numeric(x)) {
-    return (&quot;Inputted scalar or vector has a Type Error, input integers only.&quot;)
+    return (&quot;Input is of invalid type, please input integers only!&quot;)
   } 
   for (input in x) {
     check &lt;- invalid_arg(input)
@@ -175,17 +175,15 @@ FizzBuzz &lt;- function(x) {
   }
 }</code></pre>
 <p>Here we test the function against several inputs:</p>
-<pre class="r"><code>input1 &lt;- 5 # scalar integer
-input2 &lt;- 1:15 # vector of integers
-input3 &lt;- &quot;hello, M280 grader!&quot; # character
-input4 &lt;- c(3, 5, 15, 3.14159265359) # mixture of numbers and characters
-input5 &lt;- -20 # negative values
-input6 &lt;- c(3, Inf) # Infinity value
-input7 &lt;- c(5, NA) # NA value
+<pre class="r"><code>test1 &lt;- 1:15 # vector of integers
+test2 &lt;- &quot;hello, M280 grader!&quot; # character
+test3 &lt;- 5 # scalar integer
+test4 &lt;- c(3, 5, 15, 3.14159265359) # mixture of numbers and characters
+test5 &lt;- -20 # negative values
+test6 &lt;- c(3, Inf)
+test7 &lt;- c(5, NA)
 
-FizzBuzz(input1)</code></pre>
-<pre><code>## [1] &quot;Buzz&quot;</code></pre>
-<pre class="r"><code>FizzBuzz(input2)</code></pre>
+FizzBuzz(test1)</code></pre>
 <pre><code>## [1] 1
 ## [1] 2
 ## [1] &quot;Fizz&quot;
@@ -201,24 +199,98 @@ FizzBuzz(input1)</code></pre>
 ## [1] 13
 ## [1] 14
 ## [1] &quot;FizzBuzz&quot;</code></pre>
-<pre class="r"><code>FizzBuzz(input3)</code></pre>
-<pre><code>## [1] &quot;Inputted scalar or vector has a Type Error, input integers only.&quot;</code></pre>
-<pre class="r"><code>FizzBuzz(input4)</code></pre>
+<pre class="r"><code>FizzBuzz(test2)</code></pre>
+<pre><code>## [1] &quot;Input is of invalid type, please input integers only!&quot;</code></pre>
+<pre class="r"><code>FizzBuzz(test3)</code></pre>
+<pre><code>## [1] &quot;Buzz&quot;</code></pre>
+<pre class="r"><code>FizzBuzz(test4)</code></pre>
 <pre><code>## [1] &quot;Fizz&quot;
 ## [1] &quot;Buzz&quot;
 ## [1] &quot;FizzBuzz&quot;
 ## [1] &quot;An input of the argument is a non-integer, integers only.&quot;</code></pre>
-<pre class="r"><code>FizzBuzz(input5)</code></pre>
+<pre class="r"><code>FizzBuzz(test5)</code></pre>
 <pre><code>## [1] &quot;Buzz&quot;</code></pre>
-<pre class="r"><code>FizzBuzz(input6)</code></pre>
+<pre class="r"><code>FizzBuzz(test6)</code></pre>
 <pre><code>## [1] &quot;Fizz&quot;
 ## [1] &quot;An input of the argument is infinity and beyond, integers only.&quot;</code></pre>
-<pre class="r"><code>FizzBuzz(input7)</code></pre>
+<pre class="r"><code>FizzBuzz(test7)</code></pre>
 <pre><code>## [1] &quot;Buzz&quot;
 ## [1] &quot;An input of the argument is NA, integers only!&quot;</code></pre>
 </div>
 <div id="question-3.-rcpp" class="section level2">
 <h2>Question 3. Rcpp</h2>
+<p>The Fizzy_cpp code is a simpler version of the FizzBuzz code I coded earlier. The Rcpp code accepts an integer vector and begins looping over the entire vector element by element, checking first for divisibility by 5 and 3, 3, and lastly 5. If the element is not divisible by any of the above, the element is outputted. Instead of validating the inputs through Rcpp, we will use R code to validate, then run the Fizzy_cpp function.</p>
+<pre class="cpp"><code>#include &lt;Rcpp.h&gt;
+#include &lt;iostream&gt;
+using namespace Rcpp;
+using namespace std;
+
+// [[Rcpp::export]]
+
+void Fizzy_cpp(vector&lt;int&gt; &amp; element){
+  for(unsigned i = 0; i &lt; element.size(); ++i) {
+    if (element[i] % 5 == 0 &amp; element[i] % 3 == 0)
+      std::cout &lt;&lt; &quot;FizzBuzz&quot; &lt;&lt; std::endl;
+    else if (element[i] % 3 == 0) 
+      std::cout &lt;&lt; &quot;Fizz&quot; &lt;&lt; std::endl;
+    else if (element[i] % 5 == 0)
+      std::cout &lt;&lt; &quot;Buzz&quot; &lt;&lt; std::endl;
+    else 
+      std::cout &lt;&lt; element[i] &lt;&lt; std::endl;
+  }
+}</code></pre>
+<p>Below we have the following R function, serving as an argument validator:</p>
+<pre class="r"><code>Validator &lt;- function(input) {
+  if (!is.numeric(input)) {
+    print(&quot;Input is of invalid type, please input integers only!&quot;)
+    check = 0
+  }
+  if (is.numeric(input)) {
+    if (sum(input %% 1 == 0) == length(input) &amp; length(input) &gt; 1) {
+      check = 1
+    } else {
+      check = 0
+      print(&quot;Input is of invalid type, please input integers only!&quot;)
+    }
+  }
+  if (check == 1) {
+    print(Fizzy_cpp(input))
+  }
+}</code></pre>
+<p>Finally, we test the function against several inputs shown below:</p>
+<pre class="r"><code>testcpp1 &lt;- 1:15 # vector of integers
+testcpp2 &lt;- &quot;hello, M280 grader!&quot; # character
+testcpp3 &lt;- c(3, 5, 15, 3.14159265359) # mixture of numbers and characters
+testcpp4 &lt;- c(-20, -21) # negative values
+
+
+FizzBuzz(testcpp1)</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] &quot;Fizz&quot;
+## [1] 4
+## [1] &quot;Buzz&quot;
+## [1] &quot;Fizz&quot;
+## [1] 7
+## [1] 8
+## [1] &quot;Fizz&quot;
+## [1] &quot;Buzz&quot;
+## [1] 11
+## [1] &quot;Fizz&quot;
+## [1] 13
+## [1] 14
+## [1] &quot;FizzBuzz&quot;</code></pre>
+<pre class="r"><code>FizzBuzz(testcpp2)</code></pre>
+<pre><code>## [1] &quot;Input is of invalid type, please input integers only!&quot;</code></pre>
+<pre class="r"><code>FizzBuzz(testcpp3)</code></pre>
+<pre><code>## [1] &quot;Fizz&quot;
+## [1] &quot;Buzz&quot;
+## [1] &quot;FizzBuzz&quot;
+## [1] &quot;An input of the argument is a non-integer, integers only.&quot;</code></pre>
+<pre class="r"><code>FizzBuzz(testcpp4)</code></pre>
+<pre><code>## [1] &quot;Buzz&quot;
+## [1] &quot;Fizz&quot;</code></pre>
+<p>Here we see a variety of different outputs. The testcpp1 shows the proper output and is a valid input. In testcpp2, because we have passed a character string, we are returned with an error message of invalid type. The testcpp3 gives us a combination of outputs, the first 3 outputs are of valid arguments while the lasts one is a decimal, thus getting flagged as a non-integer. Lastly, testcpp4 shows the capability of accepting negatives values.</p>
 </div>
 
 

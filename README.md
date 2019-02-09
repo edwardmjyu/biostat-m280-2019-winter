@@ -6,4 +6,3 @@ Master Build Status
 
 Develop Build Status
 [![Build Status](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter.svg?token=yQzFps26vPmcxdEGm582&branch=develop)](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter)
-  

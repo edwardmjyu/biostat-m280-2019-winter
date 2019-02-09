@@ -18,6 +18,6 @@ Imports:
     reshape2,
     dplyr,
     readr,
+    Rcpp,
     gridExtra,
-    knitr,
-    Rcpp
+    knitr

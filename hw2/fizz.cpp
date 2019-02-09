@@ -5,15 +5,15 @@ using namespace std;
 
 // [[Rcpp::export]]
 
-void Fizzy_cpp(NumericVector & nums){
-  for(unsigned i = 0; i < nums.size(); ++i) {
-    if (i % 5 == 0 && i % 3 == 0)
+void Fizzy_cpp(vector<int> & element){
+  for(unsigned i = 0; i < element.size(); ++i) {
+    if (element[i] % 5 == 0 & element[i] % 3 == 0)
       std::cout << "FizzBuzz" << std::endl;
-    else if (i % 3 == 0) 
+    else if (element[i] % 3 == 0) 
       std::cout << "Fizz" << std::endl;
-    else if (i % 5 == 0)
+    else if (element[i] % 5 == 0)
       std::cout << "Buzz" << std::endl;
     else 
-       std::cout << i << std::endl;
+      std::cout << element[i] << std::endl;
   }
 }
