@@ -5,19 +5,15 @@ using namespace std;
 
 // [[Rcpp::export]]
 
-void Fizzy(vector<int> & nums){
+void Fizzy_cpp(NumericVector & nums){
   for(unsigned i = 0; i < nums.size(); ++i) {
-    if (std::isnan(i))
     if (i % 5 == 0 && i % 3 == 0)
-       printf("FizzBuzz\n");
+      std::cout << "FizzBuzz" << std::endl;
     else if (i % 3 == 0) 
-       printf("Fizz\n");
+      std::cout << "Fizz" << std::endl;
     else if (i % 5 == 0)
-      printf("Buzz\n");
+      std::cout << "Buzz" << std::endl;
     else 
        std::cout << i << std::endl;
-    else 
-      printf("NA present, integers only!");
-      break;
   }
 }

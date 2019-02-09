@@ -1,51 +1,114 @@
 ---
 title: "Biostat M280 Homework 2"
 subtitle: Due Feb 8 @ 11:59PM
+author: "Edward Yu, UID: 705241661"
 output: html_document
 ---
 
-
-
-Master Build Status
-[![Build Status](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter.svg?token=yQzFps26vPmcxdEGm582&branch=master)](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter)  
-  
-  
-  
-  ```{r setup, include=FALSE}
+```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-<p align="center">
-  <img src="./fizzbuzz.jpg" height="375">
-  </p>
+Master Build Status
+[![Build Status](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter.svg?token=yQzFps26vPmcxdEGm582&branch=master)](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter)  
+
+Develop Build Status
+[![Build Status](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter.svg?token=yQzFps26vPmcxdEGm582&branch=develop)](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter)
   
-  ## Q1. Travis CI
-  
-  1. Read the blog post [_Adding CI To RMarkdown Documents_](http://www.goring.org/resources/Adding_CI_To_RMarkdown.html) by Simon Goring. Understand what is continuous integration (CI) and why we need CI.
+## Q2. FizzBuzz Test
 
-2. Set up Travis CI for your homework 2 solution, e.g., `hw2sol.Rmd`. Graders will look for a CI passing badge on the `README.Rmd` page of your repository:
-  
-  <p align="center">
-  <img src="./passing.svg" height="175">
-  </p>
-  
-  
-  ## Q2. FizzBuzz Test
-  
-  The FizzBuzz test is a common programming interview question used to establish if a candidate can actually program in a language that they claim experience in. The problem statement is as follows:
-  
-  > "Write a program that given a list of numbers as input, prints each number on their own line. But for multiples of three print "Fizz" instead of the number and for the multiples of five print “Buzz”. For numbers which are multiples of both three and five print “FizzBuzz”."
+My FizzBuzz function has a two step verification process. 
 
-1. Your goal here is to implement FizzBuzz as an R function called `fizzbuzz`. Your fizzbuzz function should conform to the description provided above in terms of output and accept an integer argument, which can either be a scalar or vector. As such, your function should correctly print `Fizz`, `Buzz`, `FizzBuzz`, or the actual number for each integer supplied on a separate line. You should program defensively - validate any input and make sure that you have a sane response to any invalid input.
+1. The first pass checks whether the user input is a numeric scalar or vector; if it is not, then the function returns a printed message notifying the user of a Type Error and asks the user to input integers only. 
 
-You must also include a write up of your implementation that broadly describes how you approached the problem and constructed your solution (think something along the lines of the methods section of a journal article).
+2. The second verification is a more refined, checking whether the input is `NA`, `Inf`, or a decimal value. This function was primarily created from the need to defensively code since a user can pass a variety of values into the function. The `FizzBuzz` function first checks itself if the input is numeric. This first step is necessary because if a character value is passed through the function, the character will coerce the rest of the vector into a character vector since R objects cannot be of multiple classes unless it is defined as a list. 
 
-This is not a terribly complex or difficult task, and solutions in R and many other languages are easily Googleable - the point of this exercise is again to get used to the workflow and tools: RStudio, RMarkdown, Git/GitHub, Travis, etc.
+3. Next, the for loop goes through each element of the user input and checks whether any violations occur via calling the `invalid_arg` function. If the check passes, then the element enters the meat of the `FizzBuzz` function. The function must check whether it is divisible by both 5 and 3 first before other checks to make sure `FizzBuzz` is properly printed. 
 
-2. Use your FizzBuzz function to display the correct output for a variety of inputs, make sure to show what happens for both good and bad input. 
+```{r}
+#Check arguments of input and determine whether input is valid
+invalid_arg <- function(input) {
+  if (is.numeric(input) == 0) {
+    print("An input of the argument is a non-numeric, integers only.")
+    return(0)
+  } else if (is.na(input)) {
+    print("An input of the argument is NA, integers only!")
+    return(0)
+  } else if (is.infinite(input)) {
+    print("An input of the argument is infinity and beyond, integers only.")
+    return(0)
+  } else if (input %% 1 != 0) {
+    print("An input of the argument is a non-integer, integers only.")
+    return(0)
+  } else {
+    return(1)
+  }
+}
 
-## Q3. Rcpp
+#FizzBuzz combines the first function testing args and outputs proper response.
+FizzBuzz <- function(x) {
+  if (!is.numeric(x)) {
+    return ("Inputted scalar or vector has a Type Error, input integers only.")
+  } 
+  for (input in x) {
+    check <- invalid_arg(input)
+    if(check) {
+      if (input %% 5 == 0 && input %% 3 == 0) {
+        print("FizzBuzz")
+      } else if (input %% 5 == 0) {
+        print("Buzz")
+      } else if (input %% 3 == 0) {
+        print("Fizz") 
+      } else {
+        print(input)
+      }
+    }
+  }
+}
+```
 
-1. Read the online book [_Rcpp For Everyone_](https://teuder.github.io/rcpp4everyone_en/) by Masaki E. Tsuda.
+Here we test the function against several inputs:
+```{r}
+input1 <- 5 # scalar integer
+input2 <- 1:15 # vector of integers
+input3 <- "hello, M280 grader!" # character
+input4 <- c(3, 5, 15, 3.14159265359) # mixture of numbers and characters
+input5 <- -20 # negative values
+input6 <- c(3, Inf) # Infinity value
+input7 <- c(5, NA) # NA value
 
-2. Re-do FizzBuzz test using Rcpp. 
+FizzBuzz(input1)
+FizzBuzz(input2)
+FizzBuzz(input3)
+FizzBuzz(input4)
+FizzBuzz(input5)
+FizzBuzz(input6)
+FizzBuzz(input7)
+```
+
+
+## Question 3. Rcpp
+
+```{Rcpp}
+#include <Rcpp.h>
+#include <iostream>
+using namespace Rcpp;
+using namespace std;
+
+// [[Rcpp::export]]
+
+void Fizzy_cpp(NumericVector & nums){
+  for(unsigned i = 0; i < nums.size(); ++i) {
+    if (i % 5 == 0 && i % 3 == 0)
+      std::cout << "FizzBuzz" << std::endl;
+    else if (i % 3 == 0) 
+      std::cout << "Fizz" << std::endl;
+    else if (i % 5 == 0)
+      std::cout << "Buzz" << std::endl;
+    else 
+       std::cout << i << std::endl;
+  }
+}
+```
+
+
