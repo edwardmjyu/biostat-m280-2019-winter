@@ -10,7 +10,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 Master Build Status
-[![Build Status](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter.svg?token=yQzFps26vPmcxdEGm582&branch=master)](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter)  
+[![Build Status](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter.svg?token=yQzFps26vPmcxdEGm582&branch=master)](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter)
 
 Develop Build Status
 [![Build Status](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter.svg?token=yQzFps26vPmcxdEGm582&branch=develop)](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter)
@@ -86,6 +86,13 @@ FizzBuzz(test6)
 FizzBuzz(test7)
 ```
 
+1. Test 1 shows the proper output from a sequence of 1 to 15. 
+2. Test 2 shows an error response from a character string.
+3. Test 3 shows a simple response from a scalar integer.
+4. Test 4 shows the last element is pi, but the function returns an error message because pi is a decimal. 
+5. Test 5 shows a response from a negative value.
+6. Test 6 shows an error response from passing a value of infinity. 
+7. Test 7 shows an error response from passing a value of NA.
 
 ## Question 3. Rcpp
 
