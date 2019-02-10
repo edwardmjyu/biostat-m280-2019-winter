@@ -1,0 +1,159 @@
+---
+title: "Biostat M280 Homework 2"
+subtitle: Due Feb 8 @ 11:59PM
+author: "Edward Yu, UID: 705241661"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Master Build Status
+[![Build Status](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter.svg?token=yQzFps26vPmcxdEGm582&branch=master)](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter)
+
+Develop Build Status
+[![Build Status](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter.svg?token=yQzFps26vPmcxdEGm582&branch=develop)](https://travis-ci.com/edwardmjyu/biostat-m280-2019-winter)
+  
+## Q2. FizzBuzz Test
+
+My FizzBuzz function has a two step verification process. 
+
+1. The first pass checks whether the user input is a numeric scalar or vector; if it is not, then the function returns a printed message notifying the user of a Type Error and asks the user to input integers only. 
+
+2. The second verification is a more refined, checking whether the input is `NA`, `Inf`, or a decimal value. This function was primarily created from the need to defensively code since a user can pass a variety of values into the function. The `FizzBuzz` function first checks itself if the input is numeric. This first step is necessary because if a character value is passed through the function, the character will coerce the rest of the vector into a character vector since R objects cannot be of multiple classes unless it is defined as a list. 
+
+3. Next, the for loop goes through each element of the user input and checks whether any violations occur via calling the `invalid_arg` function. If the check passes, then the element enters the meat of the `FizzBuzz` function. The function must check whether it is divisible by both 5 and 3 first before other checks to make sure `FizzBuzz` is properly printed. 
+
+```{r}
+#Check arguments of input and determine whether input is valid
+invalid_arg <- function(input) {
+  if (is.numeric(input) == 0) {
+    print("An input of the argument is a non-numeric, integers only.")
+    return(0)
+  } else if (is.na(input)) {
+    print("An input of the argument is NA, integers only!")
+    return(0)
+  } else if (is.infinite(input)) {
+    print("An input of the argument is infinity and beyond, integers only.")
+    return(0)
+  } else if (input %% 1 != 0) {
+    print("An input of the argument is a non-integer, integers only.")
+    return(0)
+  } else {
+    return(1)
+  }
+}
+
+#FizzBuzz combines the first function testing args and outputs proper response.
+FizzBuzz <- function(x) {
+  if (!is.numeric(x)) {
+    return ("Input is of invalid type, please input integers only!")
+  } 
+  for (input in x) {
+    check <- invalid_arg(input)
+    if(check) {
+      if (input %% 5 == 0 && input %% 3 == 0) {
+        print("FizzBuzz")
+      } else if (input %% 5 == 0) {
+        print("Buzz")
+      } else if (input %% 3 == 0) {
+        print("Fizz") 
+      } else {
+        print(input)
+      }
+    }
+  }
+}
+```
+
+Here we test the function against several inputs:
+```{r}
+test1 <- 1:15 # vector of integers
+test2 <- "hello, M280 grader!" # character
+test3 <- 5 # scalar integer
+test4 <- c(3, 5, 15, 3.14159265359) # mixture of numbers and characters
+test5 <- -20 # negative values
+test6 <- c(3, Inf)
+test7 <- c(5, NA)
+
+FizzBuzz(test1)
+FizzBuzz(test2)
+FizzBuzz(test3)
+FizzBuzz(test4)
+FizzBuzz(test5)
+FizzBuzz(test6)
+FizzBuzz(test7)
+```
+
+1. Test 1 shows the proper output from a sequence of 1 to 15. 
+2. Test 2 shows an error response from a character string.
+3. Test 3 shows a simple response from a scalar integer.
+4. Test 4 shows the last element is pi, but the function returns an error message because pi is a decimal. 
+5. Test 5 shows a response from a negative value.
+6. Test 6 shows an error response from passing a value of infinity. 
+7. Test 7 shows an error response from passing a value of NA.
+
+## Question 3. Rcpp
+
+The Fizzy_cpp code is a simpler version of the FizzBuzz code I coded earlier. The Rcpp code accepts an integer vector and begins looping over the entire vector element by element, checking first for divisibility by 5 and 3, 3, and lastly 5. If the element is not divisible by any of the above, the element is outputted. Instead of validating the inputs through Rcpp, we will use R code to validate, then run the Fizzy_cpp function. 
+
+```{Rcpp}
+#include <Rcpp.h>
+#include <iostream>
+using namespace Rcpp;
+using namespace std;
+
+// [[Rcpp::export]]
+
+void Fizzy_cpp(vector<int> & element){
+  for(unsigned i = 0; i < element.size(); ++i) {
+    if (element[i] % 5 == 0 & element[i] % 3 == 0)
+      std::cout << "FizzBuzz" << std::endl;
+    else if (element[i] % 3 == 0) 
+      std::cout << "Fizz" << std::endl;
+    else if (element[i] % 5 == 0)
+      std::cout << "Buzz" << std::endl;
+    else 
+      std::cout << element[i] << std::endl;
+  }
+}
+```
+
+Below we have the following R function, serving as an argument validator:
+
+```{r}
+Validator <- function(input) {
+  if (!is.numeric(input)) {
+    print("Input is of invalid type, please input integers only!")
+    check = 0
+  }
+  if (is.numeric(input)) {
+    if (sum(input %% 1 == 0) == length(input) & length(input) > 1) {
+      check = 1
+    } else {
+      check = 0
+      print("Input is of invalid type, please input integers only!")
+    }
+  }
+  if (check == 1) {
+    print(Fizzy_cpp(input))
+  }
+}
+```
+
+Finally, we test the function against several inputs shown below:
+```{r}
+testcpp1 <- 1:15 # vector of integers
+testcpp2 <- "hello, M280 grader!" # character
+testcpp3 <- c(3, 5, 15, 3.14159265359) # mixture of numbers and characters
+testcpp4 <- c(-20, -21) # negative values
+
+
+FizzBuzz(testcpp1)
+FizzBuzz(testcpp2)
+FizzBuzz(testcpp3)
+FizzBuzz(testcpp4)
+```
+
+Here we see a variety of different outputs. The testcpp1 shows the proper output and is a valid input. In testcpp2, because we have passed a character string, we are returned with an error message of invalid type. The testcpp3 gives us a combination of outputs, the first 3 outputs are of valid arguments while the lasts one is a decimal, thus getting flagged as a non-integer. Lastly, testcpp4 shows the capability of accepting negatives values. 

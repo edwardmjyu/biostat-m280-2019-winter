@@ -1,0 +1,19 @@
+language: r
+sudo: false
+script: make hw2sol
+cache: packages
+r_packages:
+- rmarkdown
+- Rcpp
+- purrr
+- ggplot2
+- plyr
+- reshape2
+- dplyr
+- gridExtra
+os:
+- linux
+- osx
+r:
+- oldrel
+- release
