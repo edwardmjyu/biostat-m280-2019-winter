@@ -134,6 +134,8 @@ server <- function(input, output) {
   
   ### Question 1.4 ###
   output$center_pay <- renderTable({
+    MeanPay$Year <- format(MeanPay$Year, digits = 0)
+    MedPay$Year <- format(MeanPay$Year, digits = 0)
     if (input$method == "Mean") {
       MeanPay %>%  filter(Year == input$Year4) %>% 
         head(input$rows4)
@@ -143,18 +145,17 @@ server <- function(input, output) {
   })
   ### Question 1.5 ###
   output$high_cost <- renderTable({
+    HighestCost$Year <- format(MeanPay$Year, digits = 0)
       HighestCost %>%  filter(Year == input$Year5) %>% 
         head(input$rows5)
   })
   ### Question 1.6 ###
   output$high_annual <- renderTable({
+    HighestAnnual$Year <- format(HighestAnnual$Year, digits = 0)
     HighestAnnual %>%  filter(Year == input$Year6) %>% 
       head(input$rows6)
   })
-  
-  
 }
 
 # Run the application 
 shinyApp(ui = ui, server = server)
-

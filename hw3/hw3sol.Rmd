@@ -28,12 +28,14 @@ The `/home/m280data/la_payroll/City_Employee_Payroll.csv` file on teaching serve
 
 7. Publish your Shiny app to <https://www.shinyapps.io> and share the link.
 
+Below is a link to my shiny new app:  <https://edwardmjyu.shinyapps.io/lapayroll_shiny/>
+
 ## Q2 LA City Parking War
 
 The SQLite database `/home/m280data/la_parking/LA_Parking_Citations.sqlite` on teaching server contains information about parking tickets in LA City. It was downloaded from [LA Open Data Portal](https://data.lacity.org/A-Well-Run-City/Parking-Citations/wjz9-h9np). Connect to the database and answer following questions using plots and summary statistics. In this exercise, you are **not** allowed to load whole data into memory. Use the _transform in database, plot in R_ strategy.
 
 
-```{r}
+```{r, }
 ### Initiate Libraries ###
 library("DBI")
 library("RSQLite")
@@ -42,31 +44,21 @@ library("tidyverse")
 con <- dbConnect(RSQLite::SQLite(), 
                 "/home/m280data/la_parking/LA_Parking_Citations.sqlite")
 dbListTables(con) #Check tables available in connection
-str(latix)
 latix <- dplyr::tbl(con, "latix")
 knitr::opts_chunk$set(connection = "con")
 ```
 
-```{sql connection = "con"}
-SELECT * FROM latix
-WHERE Issue_Wday = 1;
-```
-
-1. How many tickets are in this data set? Which time period do these tickets span? Which years have most data?
-
+**1. How many tickets are in this data set? Which time period do these tickets span? Which years have most data?**
 ```{sql connection="con"}
 SELECT count(DISTINCT Ticket_number) AS num_ticket FROM latix;
 ```
-
 **Solution**: There are 7656,362 distinct tickets, SQL removes any `NA` data.
-
 
 ```{sql connection="con"}
 SELECT datetime(MIN(Issue_DateTime), 'unixepoch') AS "Start Time",
        datetime(MAX(Issue_DateTime), 'unixepoch') AS "End Time"
 FROM latix;
 ```
-
 **Solution**: The time period the tickets span is from `2015-07-02 01:00:00 UTC` to `2019-01-25 23:58:00 UTC`.
 
 ```{sql connection="con"}
@@ -77,10 +69,9 @@ FROM latix
 GROUP BY 1
 ORDER BY 2 DESC
 ```
-
 **Solution**: The year with the most tickets was in 2017 with `2,235,243` tickets.
 
-2. When (which hour, weekday, month day, and month) are you most likely to get a ticket and when are you least likely to get a ticket?
+**2. When (which hour, weekday, month day, and month) are you most likely to get a ticket and when are you least likely to get a ticket?**
 
 Calculating for hour:
 ```{r}
@@ -118,7 +109,7 @@ latix %>%
   summarise(n = n()) %>%
   arrange(desc(n))
 ```
-**Solution**: The barchart shows that most tickets are issued on `Monday` it most likely to get a ticket on `Monday` and least likely to get a ticket on `Saturday`. 
+**Solution**: The bar chart shows that most tickets are issued on `Monday` it most likely to get a ticket on `Monday` and least likely to get a ticket on `Saturday`. 
 
 Calculating for day of month:
 ```{r}
@@ -137,7 +128,7 @@ latix %>%
   summarise(n = n()) %>%
   arrange(desc(n))
 ```
-**Solution**: The barchart shows that it most likely to get a ticket on day `13` and least likely to get a ticket on day `31`. This is most likely due to there being the least number of months with `31` days. 
+**Solution**: The bar chart shows that it most likely to get a ticket on day `13` and least likely to get a ticket on day `31`. This is most likely due to there being the least number of months with `31` days. 
 
 Calculating for month:
 ```{r}
@@ -156,16 +147,81 @@ latix %>%
   summarise(n = n()) %>%
   arrange(desc(n))
 ```
-**Solution**: The barchart shows that it most likely to get a ticket on `August` and least likely to get a ticket on `Februrary`. This is most likely due to there being the least days in `February`
+**Solution**: The bar chart shows that it most likely to get a ticket on `August` and least likely to get a ticket on `Februrary`. This is most likely due to there being the least days in `February`
 
-3. Which car makes received most citations?
+**3. Which car makes received most citations?**
+```{r}
+car <- 
+ "SELECT
+    Make AS Car,
+    COUNT(*) AS Number
+  FROM latix
+  WHERE Make IS NOT NULL
+  GROUP BY 1
+  ORDER BY 2 DESC
+  LIMIT 1"
 
-4. How many different colors of cars were ticketed? Which color attracted most tickets?
+dbGetQuery(con, car) 
+```
+**Solution**: The make that received the most citations was the Toyota with a total of `1,270,804` citations.
 
-5. What are the most common ticket types?
+**4. How many different colors of cars were ticketed? Which color attracted most tickets?**
+```{r}
+color <- 
+ "SELECT
+    Color AS Color,
+    COUNT(*) AS Number
+  FROM latix
+  WHERE Color IS NOT NULL
+  GROUP BY 1
+  ORDER BY 2 DESC
+  LIMIT 1"
 
-6. How much money was collected on parking tickets in 2016, 2017 and 2018?
+dbGetQuery(con, color) 
+color <- dbGetQuery(con, color) 
+nrow(color)
+```
+**Solution**: Black cars were flagged for the most number of tickets at `1,651,398` tickets.
+There are a total of `103` different colors.
 
-7. If you've been ticketed in LA County, did you find your ticket in this data set?
+**5. What are the most common ticket types?**
+```{r}
+ticket_type <- 
+ "SELECT
+    Violation_Description AS violation,
+    COUNT(*) AS Number
+  FROM latix
+  WHERE violation IS NOT NULL
+  GROUP BY 1
+  ORDER BY 2 DESC
+  LIMIT 1"
+
+dbGetQuery(con, ticket_type) 
+```
+**Solution**: The most type of ticket is `NO PARK/STREET CLEAN` with `2,234,699` tickets.
+
+**6. How much money was collected on parking tickets in 2016, 2017 and 2018?**
+```{r}
+money <-   
+  "SELECT
+    strftime('%Y', DATETIME(Issue_DateTime, 'unixepoch')) AS Year,
+    SUM(Fine_amount) AS money
+  FROM latix
+  WHERE Issue_DateTime IS NOT NULL
+  GROUP BY 1"
+
+money <- dbGetQuery(con, money)
+money %>% 
+  filter(Year %in% c("2016", "2017", "2018"))
+```
+**Solution**: 
+The amount of money collected in tickets for the following years:
+-2016: `$152,145,538`
+-2017: `$157,122,489`	
+-2018: `$138,875,787`
+
+**7. If you've been ticketed in LA County, did you find your ticket in this data set?**
+
+I've never been ticketed in LA before!
 
 8. Read the blog <http://www.brettrics.com/9-million-parking-tickets-la/> and try to reproduce plots using your data.

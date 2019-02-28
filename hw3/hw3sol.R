@@ -4,7 +4,6 @@ library(shinythemes)
 library(rsconnect)
 library("DBI")
 library("RSQLite")
-fluidPage()
 
 payroll <- read_csv("/home/m280data/la_payroll/City_Employee_Payroll.csv")
 head(payroll)
@@ -79,25 +78,3 @@ HighestAnnual <- payroll %>%
                              na.rm = TRUE)) %>% 
   arrange( Year, desc(`Mean Annual Salary`)) 
 write_rds(HighestAnnual, "hw3/LAPayroll_Shiny/HighestAnnual.rds")
-
-library(scales)
-runApp("hw3/LAPayroll_Shiny/")
-
-rsconnect::setAccountInfo(name='edwardmjyu',
-                          token='3176DCF91E8F9DAF8EDEDF70140B38F3',
-                          secret='V7Y0DUVoOEKVgFVCttolHtsmsfefBDvBUnw3/x6X')
-
-rsconnect::deployApp('hw3/LAPayroll_Shiny/')
-
-### Question 2 ###
-con <- dbConnect(RSQLite::SQLite(), 
-                "/home/m280data/la_parking/LA_Parking_Citations.sqlite")
-str(con)
-dbListTables(con)
-latix_sql <- dplyr::tbl(con, "latix")
-
-res <- dbSendQuery(con, "SELECT * FROM latix")
-# execute the query
-tabs <- dbFetch(res)
-
-
