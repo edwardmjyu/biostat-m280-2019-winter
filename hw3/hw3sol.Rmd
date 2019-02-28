@@ -16,34 +16,156 @@ The `/home/m280data/la_payroll/City_Employee_Payroll.csv` file on teaching serve
 
 1. For efficiency of the Shiny app, you should first pre-process, pare down, tidy, and save the data, e.g., as a compressed RDS file, to be used in the app.
 
-0. **Total payroll by LA City**. Visualize the total LA City payroll of each year, with breakdown into base pay, overtime pay, and other pay.
+2. **Total payroll by LA City**. Visualize the total LA City payroll of each year, with breakdown into base pay, overtime pay, and other pay.
 
-0. **Who earned most?** Visualize the payroll information (total payment with breakdown into base pay, overtime pay, and other pay, Department, Job Title) of the top $n$ highest paid LA City employees in a specific year. User specifies $n$ (default 10) and year (default 2017).
+3. **Who earned most?** Visualize the payroll information (total payment with breakdown into base pay, overtime pay, and other pay, Department, Job Title) of the top $n$ highest paid LA City employees in a specific year. User specifies $n$ (default 10) and year (default 2017).
 
-0. **Which departments earn most?** Visualize the mean or median payroll, with breakdown into base pay, overtime pay, and other pay, of top $n$ earning departments. User specifies $n$ (default 5), year (default 2017), and method (mean or median, default median).
+4. **Which departments earn most?** Visualize the mean or median payroll, with breakdown into base pay, overtime pay, and other pay, of top $n$ earning departments. User specifies $n$ (default 5), year (default 2017), and method (mean or median, default median).
 
-0. **Which departments cost most?** Visualize the total payroll, with breakdown into base pay, overtime pay, and other pay, of top $n$ expensive departments. User specifies $n$ (default 5) and year (default 2017).
+5. **Which departments cost most?** Visualize the total payroll, with breakdown into base pay, overtime pay, and other pay, of top $n$ expensive departments. User specifies $n$ (default 5) and year (default 2017).
 
-0. Visualize any other information you are interested in.
+6. Visualize any other information you are interested in.
 
-0. Publish your Shiny app to <https://www.shinyapps.io> and share the link.
+7. Publish your Shiny app to <https://www.shinyapps.io> and share the link.
 
 ## Q2 LA City Parking War
 
 The SQLite database `/home/m280data/la_parking/LA_Parking_Citations.sqlite` on teaching server contains information about parking tickets in LA City. It was downloaded from [LA Open Data Portal](https://data.lacity.org/A-Well-Run-City/Parking-Citations/wjz9-h9np). Connect to the database and answer following questions using plots and summary statistics. In this exercise, you are **not** allowed to load whole data into memory. Use the _transform in database, plot in R_ strategy.
 
+
+```{r}
+### Initiate Libraries ###
+library("DBI")
+library("RSQLite")
+library("tidyverse")
+### Prepare SQL Connection ###
+con <- dbConnect(RSQLite::SQLite(), 
+                "/home/m280data/la_parking/LA_Parking_Citations.sqlite")
+dbListTables(con) #Check tables available in connection
+str(latix)
+latix <- dplyr::tbl(con, "latix")
+knitr::opts_chunk$set(connection = "con")
+```
+
+```{sql connection = "con"}
+SELECT * FROM latix
+WHERE Issue_Wday = 1;
+```
+
 1. How many tickets are in this data set? Which time period do these tickets span? Which years have most data?
 
-0. When (which hour, weekday, month day, and month) are you most likely to get a ticket and when are you least likely to get a ticket?
+```{sql connection="con"}
+SELECT count(DISTINCT Ticket_number) AS num_ticket FROM latix;
+```
 
-0. Which car makes received most citations?
+**Solution**: There are 7656,362 distinct tickets, SQL removes any `NA` data.
 
-0. How many different colors of cars were ticketed? Which color attracted most tickets?
 
-0. What are the most common ticket types?
+```{sql connection="con"}
+SELECT datetime(MIN(Issue_DateTime), 'unixepoch') AS "Start Time",
+       datetime(MAX(Issue_DateTime), 'unixepoch') AS "End Time"
+FROM latix;
+```
 
-0. How much money was collected on parking tickets in 2016, 2017 and 2018?
+**Solution**: The time period the tickets span is from `2015-07-02 01:00:00 UTC` to `2019-01-25 23:58:00 UTC`.
 
-0. If you've been ticketed in LA County, did you find your ticket in this data set?
+```{sql connection="con"}
+SELECT 
+  strftime('%Y', datetime(Issue_DateTime, 'unixepoch')) AS Year, 
+  count(*) AS Count
+FROM latix
+GROUP BY 1
+ORDER BY 2 DESC
+```
 
-0. Read the blog <http://www.brettrics.com/9-million-parking-tickets-la/> and try to reproduce plots using your data.
+**Solution**: The year with the most tickets was in 2017 with `2,235,243` tickets.
+
+2. When (which hour, weekday, month day, and month) are you most likely to get a ticket and when are you least likely to get a ticket?
+
+Calculating for hour:
+```{r}
+hour <- 
+  "SELECT 
+    strftime('%H', DATETIME(Issue_DateTime, 'unixepoch')) AS Hour
+  FROM latix
+  WHERE Issue_DateTime IS NOT NULL"
+
+hour <- dbGetQuery(con, hour) 
+ggplot(hour, aes(Hour)) + geom_bar()
+latix %>% 
+  select(Issue_Hour) %>%
+  filter(!is.na(Issue_Hour)) %>%
+  group_by(Issue_Hour) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+```
+**Solution**: The bar chart above shows that `12pm` is the most likely time to receive a ticket while `5am` is the least likely time. 
+
+Calculating for weekday:
+```{r}
+weekday <- 
+  "SELECT 
+    strftime('%w', DATETIME(Issue_DateTime, 'unixepoch')) AS Weekday
+  FROM latix
+  WHERE Issue_DateTime IS NOT NULL"
+
+weekday <- dbGetQuery(con, weekday) 
+ggplot(weekday, aes(Weekday)) + geom_bar()
+latix %>% 
+  select(Issue_Wday) %>%
+  filter(!is.na(Issue_Wday)) %>%
+  group_by(Issue_Wday) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+```
+**Solution**: The barchart shows that most tickets are issued on `Monday` it most likely to get a ticket on `Monday` and least likely to get a ticket on `Saturday`. 
+
+Calculating for day of month:
+```{r}
+dmonth <- 
+  "SELECT 
+    strftime('%d', DATETIME(Issue_DateTime, 'unixepoch')) AS Mday
+  FROM latix
+  WHERE Issue_DateTime IS NOT NULL"
+
+mday <- dbGetQuery(con, dmonth) 
+ggplot(mday, aes(Mday)) + geom_bar()
+latix %>% 
+  select(Issue_Day) %>%
+  filter(!is.na(Issue_Day)) %>%
+  group_by(Issue_Day) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+```
+**Solution**: The barchart shows that it most likely to get a ticket on day `13` and least likely to get a ticket on day `31`. This is most likely due to there being the least number of months with `31` days. 
+
+Calculating for month:
+```{r}
+month <- 
+  "SELECT 
+    strftime('%m', DATETIME(Issue_DateTime, 'unixepoch')) AS Month
+  FROM latix
+  WHERE Issue_DateTime IS NOT NULL"
+
+month <- dbGetQuery(con, month) 
+ggplot(month, aes(Month)) + geom_bar()
+latix %>% 
+  select(Issue_Month) %>%
+  filter(!is.na(Issue_Month)) %>%
+  group_by(Issue_Month) %>%
+  summarise(n = n()) %>%
+  arrange(desc(n))
+```
+**Solution**: The barchart shows that it most likely to get a ticket on `August` and least likely to get a ticket on `Februrary`. This is most likely due to there being the least days in `February`
+
+3. Which car makes received most citations?
+
+4. How many different colors of cars were ticketed? Which color attracted most tickets?
+
+5. What are the most common ticket types?
+
+6. How much money was collected on parking tickets in 2016, 2017 and 2018?
+
+7. If you've been ticketed in LA County, did you find your ticket in this data set?
+
+8. Read the blog <http://www.brettrics.com/9-million-parking-tickets-la/> and try to reproduce plots using your data.

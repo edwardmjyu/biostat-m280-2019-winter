@@ -9,6 +9,7 @@
 library(shiny)
 library(shinythemes)
 library(tidyverse)
+library(scales)
 
 ### Import the RDS datasets ###
 TotalPay <- readRDS("TotPay.rds")
@@ -127,8 +128,8 @@ server <- function(input, output) {
   
   ### Question 1.3 ###
   output$highest_pay <- renderTable({
-    HighestPay %>% filter(Year == input$Year3) %>%
-      head(input$rows3)
+    HighestPay$Year <- format(HighestPay$Year, digits = 0)
+    HighestPay %>% filter(Year == input$Year3) %>% head(input$rows3)
   })
   
   ### Question 1.4 ###
