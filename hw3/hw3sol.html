@@ -9,6 +9,7 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Edward Yu" />
 
 
 <title>Biostat M280 Homework 3</title>
@@ -185,6 +186,7 @@ $(document).ready(function () {
 
 <h1 class="title toc-ignore">Biostat M280 Homework 3</h1>
 <h3 class="subtitle"><em>Due Mar 1 @ 11:59PM</em></h3>
+<h4 class="author"><em>Edward Yu</em></h4>
 
 </div>
 
@@ -202,6 +204,7 @@ $(document).ready(function () {
 <li><p>Visualize any other information you are interested in.</p></li>
 <li><p>Publish your Shiny app to <a href="https://www.shinyapps.io" class="uri">https://www.shinyapps.io</a> and share the link.</p></li>
 </ol>
+<p><strong>Solution</strong>: Below is a link to my shiny new app: <a href="https://edwardmjyu.shinyapps.io/lapayroll_shiny/" class="uri">https://edwardmjyu.shinyapps.io/lapayroll_shiny/</a></p>
 </div>
 <div id="q2-la-city-parking-war" class="section level2">
 <h2>Q2 LA City Parking War</h2>
@@ -221,310 +224,10 @@ library(&quot;tidyverse&quot;)</code></pre>
 <pre class="r"><code>### Prepare SQL Connection ###
 con &lt;- dbConnect(RSQLite::SQLite(), 
                 &quot;/home/m280data/la_parking/LA_Parking_Citations.sqlite&quot;)
-dbListTables(con) #Check tables available in connection</code></pre>
-<pre><code>## [1] &quot;latix&quot;</code></pre>
-<pre class="r"><code>latix &lt;- dplyr::tbl(con, &quot;latix&quot;)
+dbListTables(con) #Check tables available in connection
+latix &lt;- dplyr::tbl(con, &quot;latix&quot;)
 knitr::opts_chunk$set(connection = &quot;con&quot;)</code></pre>
-<pre class="sql"><code>SELECT * FROM latix
-WHERE Issue_Wday = 1;</code></pre>
-<div class="knitsql-table">
-<table>
-<caption>Displaying records 1 - 10</caption>
-<thead>
-<tr class="header">
-<th align="right">Ticket_number</th>
-<th align="right">Issue_DateTime</th>
-<th align="right">Issue_Year</th>
-<th align="right">Issue_Month</th>
-<th align="right">Issue_Day</th>
-<th align="right">Issue_Hour</th>
-<th align="right">Issue_Minute</th>
-<th align="right">Issue_Wday</th>
-<th align="left">Meter_Id</th>
-<th align="left">Marked_Time</th>
-<th align="left">RP_State_Plate</th>
-<th align="right">Plate_Expiry_Date</th>
-<th align="right">VIN</th>
-<th align="left">Make</th>
-<th align="left">Body_Style</th>
-<th align="left">Color</th>
-<th align="left">Location</th>
-<th align="left">Route</th>
-<th align="right">Agency</th>
-<th align="left">Violation_code</th>
-<th align="left">Violation_Description</th>
-<th align="right">Fine_amount</th>
-<th align="right">Latitude</th>
-<th align="right">Longitude</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td align="right">1112130563</td>
-<td align="right">1452458520</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">10</td>
-<td align="right">20</td>
-<td align="right">42</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">CA</td>
-<td align="right">201607</td>
-<td align="right">NA</td>
-<td align="left">HOND</td>
-<td align="left">PA</td>
-<td align="left">BK</td>
-<td align="left">380 WORLD WAY</td>
-<td align="left">3C218</td>
-<td align="right">2</td>
-<td align="left">000</td>
-<td align="left">17104h</td>
-<td align="right">NA</td>
-<td align="right">6439920</td>
-<td align="right">1802687</td>
-</tr>
-<tr class="even">
-<td align="right">4272595541</td>
-<td align="right">1451857200</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">21</td>
-<td align="right">40</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">CA</td>
-<td align="right">201607</td>
-<td align="right">NA</td>
-<td align="left">TOYT</td>
-<td align="left">PA</td>
-<td align="left">SL</td>
-<td align="left">1401 IVAR AVE</td>
-<td align="left">00402</td>
-<td align="right">54</td>
-<td align="left">80.66.1D</td>
-<td align="left">RESTRICTED TAXI ZONE</td>
-<td align="right">68</td>
-<td align="right">6462121</td>
-<td align="right">1857542</td>
-</tr>
-<tr class="odd">
-<td align="right">4273107171</td>
-<td align="right">1451794560</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">4</td>
-<td align="right">16</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">CA</td>
-<td align="right">NA</td>
-<td align="right">NA</td>
-<td align="left">BMW</td>
-<td align="left">PA</td>
-<td align="left">GY</td>
-<td align="left">105 4TH ST E</td>
-<td align="left">00604</td>
-<td align="right">56</td>
-<td align="left">80.69B</td>
-<td align="left">NO PARKING</td>
-<td align="right">73</td>
-<td align="right">6486771</td>
-<td align="right">1839998</td>
-</tr>
-<tr class="even">
-<td align="right">4273107182</td>
-<td align="right">1451804160</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">6</td>
-<td align="right">56</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">OR</td>
-<td align="right">201508</td>
-<td align="right">NA</td>
-<td align="left">CHEV</td>
-<td align="left">PA</td>
-<td align="left">WT</td>
-<td align="left">900 BRITTANIA ST</td>
-<td align="left">00604</td>
-<td align="right">56</td>
-<td align="left">80.56E4+</td>
-<td align="left">RED ZONE</td>
-<td align="right">93</td>
-<td align="right">99999</td>
-<td align="right">99999</td>
-</tr>
-<tr class="odd">
-<td align="right">4273184521</td>
-<td align="right">1451792220</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">37</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">CA</td>
-<td align="right">201608</td>
-<td align="right">NA</td>
-<td align="left">HOND</td>
-<td align="left">PA</td>
-<td align="left">SL</td>
-<td align="left">18239 GAULT ST</td>
-<td align="left">00321</td>
-<td align="right">53</td>
-<td align="left">22502A</td>
-<td align="left">18 IN. CURB/2 WAY</td>
-<td align="right">63</td>
-<td align="right">6401189</td>
-<td align="right">1895336</td>
-</tr>
-<tr class="even">
-<td align="right">4273184532</td>
-<td align="right">1451793060</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">51</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">CA</td>
-<td align="right">3</td>
-<td align="right">NA</td>
-<td align="left">FORD</td>
-<td align="left">PA</td>
-<td align="left">WT</td>
-<td align="left">16701 BASSETT ST</td>
-<td align="left">00321</td>
-<td align="right">53</td>
-<td align="left">80.69.2</td>
-<td align="left">COMM VEH OVER TIME L</td>
-<td align="right">78</td>
-<td align="right">99999</td>
-<td align="right">99999</td>
-</tr>
-<tr class="odd">
-<td align="right">4273184543</td>
-<td align="right">1451793360</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">3</td>
-<td align="right">56</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">CA</td>
-<td align="right">201604</td>
-<td align="right">NA</td>
-<td align="left">CHEV</td>
-<td align="left">PA</td>
-<td align="left">RD</td>
-<td align="left">16700 HART ST</td>
-<td align="left">00321</td>
-<td align="right">53</td>
-<td align="left">80.69.2</td>
-<td align="left">COMM VEH OVER TIME L</td>
-<td align="right">78</td>
-<td align="right">99999</td>
-<td align="right">99999</td>
-</tr>
-<tr class="even">
-<td align="right">4273184554</td>
-<td align="right">1451798580</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">5</td>
-<td align="right">23</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">NA</td>
-<td align="left">CA</td>
-<td align="right">201609</td>
-<td align="right">NA</td>
-<td align="left">ISU</td>
-<td align="left">PA</td>
-<td align="left">PR</td>
-<td align="left">21800 SCHOENBORN ST</td>
-<td align="left">00321</td>
-<td align="right">53</td>
-<td align="left">80.69.2</td>
-<td align="left">COMM VEH OVER TIME L</td>
-<td align="right">78</td>
-<td align="right">6379208</td>
-<td align="right">1903330</td>
-</tr>
-<tr class="odd">
-<td align="right">4273184565</td>
-<td align="right">1451800740</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">5</td>
-<td align="right">59</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">0257</td>
-<td align="left">CA</td>
-<td align="right">201605</td>
-<td align="right">NA</td>
-<td align="left">TOYT</td>
-<td align="left">PA</td>
-<td align="left">SL</td>
-<td align="left">21501 SCHOENBORN ST</td>
-<td align="left">00321</td>
-<td align="right">53</td>
-<td align="left">80.69C</td>
-<td align="left">PARKED OVER TIME LIM</td>
-<td align="right">58</td>
-<td align="right">6380617</td>
-<td align="right">1903323</td>
-</tr>
-<tr class="even">
-<td align="right">4273184576</td>
-<td align="right">1451800980</td>
-<td align="right">2016</td>
-<td align="right">1</td>
-<td align="right">3</td>
-<td align="right">6</td>
-<td align="right">3</td>
-<td align="right">1</td>
-<td align="left">NA</td>
-<td align="left">0257</td>
-<td align="left">CA</td>
-<td align="right">201608</td>
-<td align="right">NA</td>
-<td align="left">FORD</td>
-<td align="left">PA</td>
-<td align="left">WT</td>
-<td align="left">21501 SCHOENBORN ST</td>
-<td align="left">00321</td>
-<td align="right">53</td>
-<td align="left">80.69C</td>
-<td align="left">PARKED OVER TIME LIM</td>
-<td align="right">58</td>
-<td align="right">6380617</td>
-<td align="right">1903323</td>
-</tr>
-</tbody>
-</table>
-</div>
-<ol style="list-style-type: decimal">
-<li>How many tickets are in this data set? Which time period do these tickets span? Which years have most data?</li>
-</ol>
+<p><strong>1. How many tickets are in this data set? Which time period do these tickets span? Which years have most data?</strong></p>
 <pre class="sql"><code>SELECT count(DISTINCT Ticket_number) AS num_ticket FROM latix;</code></pre>
 <div class="knitsql-table">
 <table>
@@ -541,7 +244,7 @@ WHERE Issue_Wday = 1;</code></pre>
 </tbody>
 </table>
 </div>
-<p><strong>Solution</strong>: There are 7656,362 distinct tickets, SQL removes any <code>NA</code> data.</p>
+<p><strong>Solution</strong>: There are 7,656,362 distinct tickets, SQL removes any <code>NA</code> data.</p>
 <pre class="sql"><code>SELECT datetime(MIN(Issue_DateTime), 'unixepoch') AS &quot;Start Time&quot;,
        datetime(MAX(Issue_DateTime), 'unixepoch') AS &quot;End Time&quot;
 FROM latix;</code></pre>
@@ -607,9 +310,7 @@ ORDER BY 2 DESC</code></pre>
 </table>
 </div>
 <p><strong>Solution</strong>: The year with the most tickets was in 2017 with <code>2,235,243</code> tickets.</p>
-<ol start="2" style="list-style-type: decimal">
-<li>When (which hour, weekday, month day, and month) are you most likely to get a ticket and when are you least likely to get a ticket?</li>
-</ol>
+<p><strong>2. When (which hour, weekday, month day, and month) are you most likely to get a ticket and when are you least likely to get a ticket?</strong></p>
 <p>Calculating for hour:</p>
 <pre class="r"><code>hour &lt;- 
   &quot;SELECT 
@@ -673,7 +374,7 @@ ggplot(weekday, aes(Weekday)) + geom_bar()</code></pre>
 ## 5          2 1222875
 ## 6          7  446873
 ## 7          1  369564</code></pre>
-<p><strong>Solution</strong>: The barchart shows that most tickets are issued on <code>Monday</code> it most likely to get a ticket on <code>Monday</code> and least likely to get a ticket on <code>Saturday</code>.</p>
+<p><strong>Solution</strong>: The bar chart shows that most tickets are issued on <code>Monday</code>and least likely to get a ticket on <code>Saturday</code>.</p>
 <p>Calculating for day of month:</p>
 <pre class="r"><code>dmonth &lt;- 
   &quot;SELECT 
@@ -707,7 +408,7 @@ ggplot(mday, aes(Mday)) + geom_bar()</code></pre>
 ##  9         7 252678
 ## 10         3 252363
 ## # ... with more rows</code></pre>
-<p><strong>Solution</strong>: The barchart shows that it most likely to get a ticket on day <code>13</code> and least likely to get a ticket on day <code>31</code>. This is most likely due to there being the least number of months with <code>31</code> days.</p>
+<p><strong>Solution</strong>: The bar chart shows that it most likely to get a ticket on day <code>13</code> and least likely to get a ticket on day <code>31</code>. This is most likely due to there being the least number of months with <code>31</code> days.</p>
 <p>Calculating for month:</p>
 <pre class="r"><code>month &lt;- 
   &quot;SELECT 
@@ -741,10 +442,8 @@ ggplot(month, aes(Month)) + geom_bar()</code></pre>
 ##  9           5 573197
 ## 10           4 553417
 ## # ... with more rows</code></pre>
-<p><strong>Solution</strong>: The barchart shows that it most likely to get a ticket on <code>August</code> and least likely to get a ticket on <code>Februrary</code>. This is most likely due to there being the least days in <code>February</code></p>
-<ol start="3" style="list-style-type: decimal">
-<li>Which car makes received most citations?</li>
-</ol>
+<p><strong>Solution</strong>: The bar chart shows that it most likely to get a ticket in <code>August</code> and least likely to get a ticket in <code>February</code>. This is most likely due to there being the least days in <code>February</code>.</p>
+<p><strong>3. Which car makes received most citations?</strong></p>
 <pre class="r"><code>car &lt;- 
  &quot;SELECT
     Make AS Car,
@@ -758,10 +457,8 @@ ggplot(month, aes(Month)) + geom_bar()</code></pre>
 dbGetQuery(con, car) </code></pre>
 <pre><code>##    Car  Number
 ## 1 TOYT 1270804</code></pre>
-<p><strong>Solution</strong>: The make that received the most citations was the Toyota with a total of <code>1,270,804</code> citations.</p>
-<ol start="4" style="list-style-type: decimal">
-<li>How many different colors of cars were ticketed? Which color attracted most tickets?</li>
-</ol>
+<p><strong>Solution</strong>: The make that received the most citations was Toyota with a total of <code>1,270,804</code> citations.</p>
+<p><strong>4. How many different colors of cars were ticketed? Which color attracted most tickets?</strong></p>
 <pre class="r"><code>color &lt;- 
  &quot;SELECT
     Color AS Color,
@@ -772,16 +469,18 @@ dbGetQuery(con, car) </code></pre>
   ORDER BY 2 DESC
   LIMIT 1&quot;
 
-dbGetQuery(con, color) </code></pre>
-<pre><code>##   Color  Number
-## 1    BK 1652621</code></pre>
-<pre class="r"><code>color &lt;- dbGetQuery(con, color) 
-nrow(color)</code></pre>
-<pre><code>## [1] 1</code></pre>
+color &lt;- dbGetQuery(con, color) 
+c(color[1,],nrow(color))</code></pre>
+<pre><code>## $Color
+## [1] &quot;BK&quot;
+## 
+## $Number
+## [1] 1652621
+## 
+## [[3]]
+## [1] 1</code></pre>
 <p><strong>Solution</strong>: Black cars were flagged for the most number of tickets at <code>1,651,398</code> tickets. There are a total of <code>103</code> different colors.</p>
-<ol start="5" style="list-style-type: decimal">
-<li>What are the most common ticket types?</li>
-</ol>
+<p><strong>5. What are the most common ticket types?</strong></p>
 <pre class="r"><code>ticket_type &lt;- 
  &quot;SELECT
     Violation_Description AS violation,
@@ -796,9 +495,7 @@ dbGetQuery(con, ticket_type) </code></pre>
 <pre><code>##              violation  Number
 ## 1 NO PARK/STREET CLEAN 2234699</code></pre>
 <p><strong>Solution</strong>: The most type of ticket is <code>NO PARK/STREET CLEAN</code> with <code>2,234,699</code> tickets.</p>
-<ol start="6" style="list-style-type: decimal">
-<li>How much money was collected on parking tickets in 2016, 2017 and 2018?</li>
-</ol>
+<p><strong>6. How much money was collected on parking tickets in 2016, 2017 and 2018?</strong></p>
 <pre class="r"><code>money &lt;-   
   &quot;SELECT
     strftime('%Y', DATETIME(Issue_DateTime, 'unixepoch')) AS Year,
@@ -814,12 +511,9 @@ money %&gt;%
 ## 1 2016 152145538
 ## 2 2017 157122489
 ## 3 2018 138875787</code></pre>
-<p><strong>Solution</strong>: The amount of money collected in tickets for the following years: -2016: <code>$152,145,538</code> -2017: <code>$157,122,489</code><br />
--2018: <code>$138,875,787</code></p>
-<ol start="7" style="list-style-type: decimal">
-<li><p>If you’ve been ticketed in LA County, did you find your ticket in this data set? I’ve never been ticketed in LA before!</p></li>
-<li><p>Read the blog <a href="http://www.brettrics.com/9-million-parking-tickets-la/" class="uri">http://www.brettrics.com/9-million-parking-tickets-la/</a> and try to reproduce plots using your data.</p></li>
-</ol>
+<p><strong>Solution</strong>: The amount of money collected in tickets for the following years: 1. 2016: <code>$152,145,538</code> 2. 2017: <code>$157,122,489</code> 3. 2018: <code>$138,875,787</code></p>
+<p><strong>7. If you’ve been ticketed in LA County, did you find your ticket in this data set?</strong></p>
+<p>I’ve never been ticketed in LA before!</p>
 </div>
 
 

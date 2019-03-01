@@ -1,5 +1,6 @@
 ---
 title: "Biostat M280 Homework 3"
+author: "Edward Yu"
 subtitle: Due Mar 1 @ 11:59PM
 output: html_document
 ---
@@ -28,14 +29,14 @@ The `/home/m280data/la_payroll/City_Employee_Payroll.csv` file on teaching serve
 
 7. Publish your Shiny app to <https://www.shinyapps.io> and share the link.
 
-Below is a link to my shiny new app:  <https://edwardmjyu.shinyapps.io/lapayroll_shiny/>
+**Solution**: Below is a link to my shiny new app:  <https://edwardmjyu.shinyapps.io/lapayroll_shiny/>
 
 ## Q2 LA City Parking War
 
 The SQLite database `/home/m280data/la_parking/LA_Parking_Citations.sqlite` on teaching server contains information about parking tickets in LA City. It was downloaded from [LA Open Data Portal](https://data.lacity.org/A-Well-Run-City/Parking-Citations/wjz9-h9np). Connect to the database and answer following questions using plots and summary statistics. In this exercise, you are **not** allowed to load whole data into memory. Use the _transform in database, plot in R_ strategy.
 
 
-```{r, }
+```{r, results=FALSE}
 ### Initiate Libraries ###
 library("DBI")
 library("RSQLite")
@@ -49,10 +50,10 @@ knitr::opts_chunk$set(connection = "con")
 ```
 
 **1. How many tickets are in this data set? Which time period do these tickets span? Which years have most data?**
-```{sql connection="con"}
+```{sql connection="con", results=FALSE}
 SELECT count(DISTINCT Ticket_number) AS num_ticket FROM latix;
 ```
-**Solution**: There are 7656,362 distinct tickets, SQL removes any `NA` data.
+**Solution**: There are 7,656,362 distinct tickets, SQL removes any `NA` data.
 
 ```{sql connection="con"}
 SELECT datetime(MIN(Issue_DateTime), 'unixepoch') AS "Start Time",
@@ -109,7 +110,7 @@ latix %>%
   summarise(n = n()) %>%
   arrange(desc(n))
 ```
-**Solution**: The bar chart shows that most tickets are issued on `Monday` it most likely to get a ticket on `Monday` and least likely to get a ticket on `Saturday`. 
+**Solution**: The bar chart shows that most tickets are issued on `Monday`and least likely to get a ticket on `Saturday`. 
 
 Calculating for day of month:
 ```{r}
@@ -147,7 +148,7 @@ latix %>%
   summarise(n = n()) %>%
   arrange(desc(n))
 ```
-**Solution**: The bar chart shows that it most likely to get a ticket on `August` and least likely to get a ticket on `Februrary`. This is most likely due to there being the least days in `February`
+**Solution**: The bar chart shows that it most likely to get a ticket in `August` and least likely to get a ticket in `February`. This is most likely due to there being the least days in `February`.
 
 **3. Which car makes received most citations?**
 ```{r}
@@ -163,7 +164,7 @@ car <-
 
 dbGetQuery(con, car) 
 ```
-**Solution**: The make that received the most citations was the Toyota with a total of `1,270,804` citations.
+**Solution**: The make that received the most citations was Toyota with a total of `1,270,804` citations.
 
 **4. How many different colors of cars were ticketed? Which color attracted most tickets?**
 ```{r}
@@ -177,9 +178,8 @@ color <-
   ORDER BY 2 DESC
   LIMIT 1"
 
-dbGetQuery(con, color) 
 color <- dbGetQuery(con, color) 
-nrow(color)
+c(color[1,],nrow(color))
 ```
 **Solution**: Black cars were flagged for the most number of tickets at `1,651,398` tickets.
 There are a total of `103` different colors.
@@ -216,12 +216,10 @@ money %>%
 ```
 **Solution**: 
 The amount of money collected in tickets for the following years:
--2016: `$152,145,538`
--2017: `$157,122,489`	
--2018: `$138,875,787`
+1. 2016: `$152,145,538`
+2. 2017: `$157,122,489`	
+3. 2018: `$138,875,787`
 
 **7. If you've been ticketed in LA County, did you find your ticket in this data set?**
 
 I've never been ticketed in LA before!
-
-8. Read the blog <http://www.brettrics.com/9-million-parking-tickets-la/> and try to reproduce plots using your data.
